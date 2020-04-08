@@ -24,10 +24,24 @@ namespace DrawingApp
         private Point startPoint;
         private string shapeName = "rectangle";
         private Shape shape;
+        private Shape selected = null;
         private SolidColorBrush colour = Brushes.Red;
         private int stroke;
+        private Point mouseOffset;
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            switch (actionBox.SelectedIndex)    //TODO: Command pattern
+            {
+                case 0:
+                    Draw(sender, e);
+                    break;
+                default: 
+                    break;
+            }
+        }
+
+        private void Draw(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -54,6 +68,7 @@ namespace DrawingApp
                     break;
             }
 
+            shape.MouseDown += new MouseButtonEventHandler(Select);
             startPoint = e.GetPosition(canvas);
             shape.Fill = (bool)fill.IsChecked ? colour : Brushes.Transparent;
             shape.Stroke = colour;
@@ -63,7 +78,30 @@ namespace DrawingApp
             canvas.Children.Add(shape);
         }
 
+        private void Select(object sender, MouseButtonEventArgs e)
+        {
+            Trace.WriteLine("Selected something!");
+            selected = (Shape) sender;
+            mouseOffset = e.GetPosition((Shape) sender);
+        }
+
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            switch (actionBox.SelectedIndex)    //TODO: Command pattern
+            {
+                case 0:
+                    DrawMove(sender, e);
+                    break;
+                case 1:
+                    if (e.LeftButton == MouseButtonState.Pressed && selected != null)
+                    {
+                        SelectMove(e);
+                    }
+                    break;
+            }
+        }
+
+        private void DrawMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Released || shape == null)
                 return;
@@ -82,10 +120,16 @@ namespace DrawingApp
             Canvas.SetLeft(shape, x);
             Canvas.SetTop(shape, y);
         }
+        private void SelectMove(MouseEventArgs e)
+        {
+            Canvas.SetLeft(selected, e.GetPosition(canvas).X - mouseOffset.X);
+            Canvas.SetTop(selected, e.GetPosition(canvas).Y - mouseOffset.Y);
+        }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             shape = null;
+            selected = null;
         }
     }
 }

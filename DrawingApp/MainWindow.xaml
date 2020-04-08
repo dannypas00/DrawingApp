@@ -26,12 +26,18 @@
 
         <Label Grid.Row="0" Grid.Column="1" FontSize="12" Content="Shape:"/>
         <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,5,5,0" Height="Auto" x:Name="shapeBox">
-            <ComboBoxItem Name="rectange" IsSelected="True">Rectangle</ComboBoxItem>
-            <ComboBoxItem Name="elipse">Ellipse</ComboBoxItem>
+            <ComboBoxItem IsSelected="True">Rectangle</ComboBoxItem>
+            <ComboBoxItem >Ellipse</ComboBoxItem>
         </ComboBox>
 
         <Label Grid.Row="0" Grid.Column="2" FontSize="12" Content="Fill"/>
         <CheckBox Grid.Row="1" Grid.Column="2" Name="fill" Margin="5,5,5,0" />
+
+        <Label Grid.Row="0" Grid.Column="3" FontSize="12" Content="Action:"/>
+        <ComboBox Grid.Row="1" Grid.Column="3" Margin="0,5,5,0" Height="Auto" x:Name="actionBox">
+            <ComboBoxItem IsSelected="True">Draw</ComboBoxItem>
+            <ComboBoxItem>Move</ComboBoxItem>
+        </ComboBox>
 
         <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp" Background="Transparent" Grid.ColumnSpan="6" Margin="0,0,-250,-383" Grid.Row="2" />
     </Grid>
