@@ -6,7 +6,22 @@
         xmlns:local="clr-namespace:DrawingApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="20"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="100"/>
+			<ColumnDefinition Width="100"/>
+			<ColumnDefinition Width="100"/>
+			<ColumnDefinition Width="100"/>
+			<ColumnDefinition Width="100"/>
+			<ColumnDefinition Width="100"/>
+		</Grid.ColumnDefinitions>
+		<Label Grid.Row="0" Grid.Column="0" FontSize="12" Content="Stroke Size:"/>
+		<TextBox Grid.Row="1" Grid.Column="0" Name="strokeSize" Margin="35,0,35,5" Width="30" Height="15"/>
+		<Canvas Width="800" x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp" Background="Transparent" Grid.ColumnSpan="6" Margin="0,0,-200,-383" Grid.Row="2" />
+	</Grid>
 </Window>

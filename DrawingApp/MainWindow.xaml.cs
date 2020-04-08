@@ -20,9 +20,55 @@ namespace DrawingApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private Point startPoint;
+        private Rectangle rect;
+        private SolidColorBrush colour = Brushes.Red;
+        private int stroke;
+
+        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            InitializeComponent();
+            try
+            {
+                stroke = Convert.ToInt16(strokeSize.Text);
+            } catch (Exception ex)
+            {
+                stroke = 3;
+            }
+            startPoint = e.GetPosition(canvas);
+
+            rect = new Rectangle
+            {
+                Stroke = colour,
+                StrokeThickness = stroke
+            };
+            Canvas.SetLeft(rect, startPoint.X);
+            Canvas.SetTop(rect, startPoint.Y);
+            canvas.Children.Add(rect);
+        }
+
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Released || rect == null)
+                return;
+
+            var pos = e.GetPosition(canvas);
+
+            var x = Math.Min(pos.X, startPoint.X);
+            var y = Math.Min(pos.Y, startPoint.Y);
+
+            var w = Math.Max(pos.X, startPoint.X) - x;
+            var h = Math.Max(pos.Y, startPoint.Y) - y;
+
+            rect.Width = w;
+            rect.Height = h;
+
+            Canvas.SetLeft(rect, x);
+            Canvas.SetTop(rect, y);
+        }
+
+        private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            rect = null;
         }
     }
 }
