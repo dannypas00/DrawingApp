@@ -25,6 +25,7 @@ namespace DrawingApp
         private string shapeName = "rectangle";
         private Shape shape;
         private Shape selected = null;
+        private Point selectedPosition;
         private SolidColorBrush colour = Brushes.Red;
         private int stroke;
         private Point mouseOffset;
@@ -36,7 +37,7 @@ namespace DrawingApp
                 case 0:
                     Draw(sender, e);
                     break;
-                default: 
+                default:
                     break;
             }
         }
@@ -80,11 +81,42 @@ namespace DrawingApp
 
         private void Select(object sender, MouseButtonEventArgs e)
         {
-            Shape shape = (Shape) sender;
+            Shape shape = (Shape)sender;
             Trace.WriteLine("Selected something!");
             selected = shape;
             mouseOffset = e.GetPosition(shape);
             shape.StrokeDashArray = new DoubleCollection() { 1 };
+
+            double x = Canvas.GetLeft(shape);
+            selectedPosition.X = x;
+
+            double y = Canvas.GetTop(shape);
+            selectedPosition.Y = y;
+
+            Rectangle selectionSquare1 = new Rectangle
+            {
+                Width = 10,
+                Height = 10,
+                Stroke = Brushes.Gray,
+                Fill = Brushes.Gray,
+                StrokeThickness = 4
+            };
+            Canvas.SetLeft(selectionSquare1, x);
+            Canvas.SetTop(selectionSquare1, y);
+
+            Rectangle selectionSquare2 = new Rectangle
+            {
+                Width = 10,
+                Height = 10,
+                Stroke = Brushes.Gray,
+                Fill = Brushes.Gray,
+                StrokeThickness = 4
+            };
+            Canvas.SetLeft(selectionSquare2, x + shape.Width);
+            Canvas.SetTop(selectionSquare2, y + shape.Height);
+
+            canvas.Children.Add(selectionSquare1);
+            canvas.Children.Add(selectionSquare2);
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -135,7 +167,7 @@ namespace DrawingApp
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key ==Key.Escape)
+            if (e.Key == Key.Escape)
             {
                 selected.StrokeDashArray = null;
                 selected = null;
