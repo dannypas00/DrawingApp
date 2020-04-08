@@ -80,9 +80,11 @@ namespace DrawingApp
 
         private void Select(object sender, MouseButtonEventArgs e)
         {
+            Shape shape = (Shape) sender;
             Trace.WriteLine("Selected something!");
-            selected = (Shape) sender;
-            mouseOffset = e.GetPosition((Shape) sender);
+            selected = shape;
+            mouseOffset = e.GetPosition(shape);
+            shape.StrokeDashArray = new DoubleCollection() { 1 };
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -129,7 +131,15 @@ namespace DrawingApp
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             shape = null;
-            selected = null;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key ==Key.Escape)
+            {
+                selected.StrokeDashArray = null;
+                selected = null;
+            }
         }
     }
 }
