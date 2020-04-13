@@ -25,6 +25,24 @@ namespace DrawingApp
         private string shapeName = "rectangle";
         private Shape shape;
         private Shape selected = null;
+        private Rectangle selectBox1 = new Rectangle
+            {
+                Width = 10,
+                Height = 10,
+                Stroke = Brushes.Gray,
+                Fill = Brushes.Gray,
+                StrokeThickness = 4
+            };
+
+        private new Rectangle selectBox2 = new Rectangle
+            {
+                Width = 10,
+                Height = 10,
+                Stroke = Brushes.Gray,
+                Fill = Brushes.Gray,
+                StrokeThickness = 4
+            };
+
         private Point selectedPosition;
         private SolidColorBrush colour = Brushes.Red;
         private int stroke;
@@ -82,7 +100,19 @@ namespace DrawingApp
         private void Select(object sender, MouseButtonEventArgs e)
         {
             Shape shape = (Shape)sender;
+            if (selected == shape) return;
             Trace.WriteLine("Selected something!");
+            if (selected != null)
+            {
+                selected.StrokeDashArray = null;
+/*                canvas.Children.Remove(selectBox1);
+                canvas.Children.Remove(selectBox2);*/
+            }
+            else
+            {
+                canvas.Children.Add(selectBox1);
+                canvas.Children.Add(selectBox2);
+            }
             selected = shape;
             mouseOffset = e.GetPosition(shape);
             shape.StrokeDashArray = new DoubleCollection() { 1 };
@@ -93,30 +123,11 @@ namespace DrawingApp
             double y = Canvas.GetTop(shape);
             selectedPosition.Y = y;
 
-            Rectangle selectionSquare1 = new Rectangle
-            {
-                Width = 10,
-                Height = 10,
-                Stroke = Brushes.Gray,
-                Fill = Brushes.Gray,
-                StrokeThickness = 4
-            };
-            Canvas.SetLeft(selectionSquare1, x);
-            Canvas.SetTop(selectionSquare1, y);
+            Canvas.SetLeft(selectBox1, x - (selectBox1.Width / 2));
+            Canvas.SetTop(selectBox1, y - (selectBox1.Height / 2));
 
-            Rectangle selectionSquare2 = new Rectangle
-            {
-                Width = 10,
-                Height = 10,
-                Stroke = Brushes.Gray,
-                Fill = Brushes.Gray,
-                StrokeThickness = 4
-            };
-            Canvas.SetLeft(selectionSquare2, x + shape.Width);
-            Canvas.SetTop(selectionSquare2, y + shape.Height);
-
-            canvas.Children.Add(selectionSquare1);
-            canvas.Children.Add(selectionSquare2);
+            Canvas.SetLeft(selectBox2, x + shape.Width - (selectBox2.Width / 2));
+            Canvas.SetTop(selectBox2, y + shape.Height - (selectBox2.Height / 2));
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -156,8 +167,17 @@ namespace DrawingApp
         }
         private void SelectMove(MouseEventArgs e)
         {
-            Canvas.SetLeft(selected, e.GetPosition(canvas).X - mouseOffset.X);
-            Canvas.SetTop(selected, e.GetPosition(canvas).Y - mouseOffset.Y);
+            double x = e.GetPosition(canvas).X;
+            double y = e.GetPosition(canvas).Y;
+
+            Canvas.SetLeft(selected, x - mouseOffset.X);
+            Canvas.SetTop(selected, y - mouseOffset.Y);
+
+            Canvas.SetLeft(selectBox1, x - mouseOffset.X - (selectBox1.Width / 2));
+            Canvas.SetTop(selectBox1, y - mouseOffset.Y - (selectBox1.Height / 2));
+
+            Canvas.SetLeft(selectBox2, x + selected.Width - mouseOffset.X - (selectBox1.Width / 2));
+            Canvas.SetTop(selectBox2, y + selected.Height - mouseOffset.Y - (selectBox1.Height / 2));
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
