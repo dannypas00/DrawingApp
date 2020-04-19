@@ -25,32 +25,10 @@ namespace DrawingApp
         private string shapeName = "rectangle";
         private Shape shape;
         private Shape selected = null;
-        private Rectangle selectBox1 = new Rectangle
-        {
-            Width = 10,
-            Height = 10,
-            Stroke = Brushes.Gray,
-            Fill = Brushes.Gray,
-            StrokeThickness = 4
-        };
-        private new Rectangle selectBox2 = new Rectangle
-        {
-            Width = 10,
-            Height = 10,
-            Stroke = Brushes.Gray,
-            Fill = Brushes.Gray,
-            StrokeThickness = 4
-        };
         private Point selectedPosition;
         private SolidColorBrush colour = Brushes.Red;
         private int stroke;
         private Point mouseOffset;
-
-        public void Main()
-        {
-            selectBox1.MouseDown += new MouseButtonEventHandler(SelectBox_MouseDown);
-            selectBox2.MouseDown += new MouseButtonEventHandler(SelectBox_MouseDown);
-        }
 
         #region Drawing
         private void Draw(object sender, MouseButtonEventArgs e)
@@ -59,7 +37,7 @@ namespace DrawingApp
             {
                 stroke = Convert.ToInt16(strokeSize.Text);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 stroke = 3;
             }
@@ -140,19 +118,12 @@ namespace DrawingApp
             {
                 selected.StrokeDashArray = null;
                 selected = null;
-                canvas.Children.Remove(selectBox1);
-                canvas.Children.Remove(selectBox2);
                 return;
             }
             Trace.WriteLine("Selected something!");
             if (selected != null)
             {
                 selected.StrokeDashArray = null;
-            }
-            else
-            {
-                canvas.Children.Add(selectBox1);
-                canvas.Children.Add(selectBox2);
             }
             selected = shape;
             mouseOffset = e.GetPosition(shape);
@@ -163,12 +134,6 @@ namespace DrawingApp
 
             double y = Canvas.GetTop(shape);
             selectedPosition.Y = y;
-
-            Canvas.SetLeft(selectBox1, x - (selectBox1.Width / 2));
-            Canvas.SetTop(selectBox1, y - (selectBox1.Height / 2));
-
-            Canvas.SetLeft(selectBox2, x + shape.Width - (selectBox2.Width / 2));
-            Canvas.SetTop(selectBox2, y + shape.Height - (selectBox2.Height / 2));
         }
 
         private void SelectMove(MouseEventArgs e)
@@ -178,12 +143,6 @@ namespace DrawingApp
 
             Canvas.SetLeft(selected, x - mouseOffset.X);
             Canvas.SetTop(selected, y - mouseOffset.Y);
-
-            Canvas.SetLeft(selectBox1, x - mouseOffset.X - (selectBox1.Width / 2));
-            Canvas.SetTop(selectBox1, y - mouseOffset.Y - (selectBox1.Height / 2));
-
-            Canvas.SetLeft(selectBox2, x + selected.Width - mouseOffset.X - (selectBox1.Width / 2));
-            Canvas.SetTop(selectBox2, y + selected.Height - mouseOffset.Y - (selectBox1.Height / 2));
         }
         #endregion
 
@@ -198,12 +157,6 @@ namespace DrawingApp
                 default:
                     break;
             }
-        }
-
-        private void SelectBox_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            shape = (Shape)sender;
-            startPoint = new Point(Canvas.GetLeft(shape), Canvas.GetTop(shape));
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
@@ -228,15 +181,24 @@ namespace DrawingApp
                     DrawMove(sender, e);
                     break;
                 case 1:
-                    if (e.LeftButton == MouseButtonState.Pressed && selected != null && shape != selectBox1 && shape != selectBox2)
+                    if (e.LeftButton == MouseButtonState.Pressed && selected != null)
                     {
                         SelectMove(e);
                     }
-                    else if (shape == selectBox1)
-                    {
-                        ResizeMove(sender, e);
-                    }
                     break;
+            }
+        }
+
+        private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (selected != null)
+            {
+                Shape s = (Shape)selected;
+                if (s.Width + e.Delta > 0 && s.Height + e.Delta > 0)
+                {
+                    s.Width += e.Delta;
+                    s.Height += e.Delta;
+                }
             }
         }
         #endregion

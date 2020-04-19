@@ -40,6 +40,6 @@
             <ComboBoxItem>Move</ComboBoxItem>
         </ComboBox>
 
-        <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp" Background="Transparent" Grid.ColumnSpan="6" Margin="0,0,-250,-383" Grid.Row="2" />
+        <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" MouseUp="Canvas_MouseUp" Background="Transparent" Grid.ColumnSpan="6" Margin="0,0,-250,-383" Grid.Row="2" />
     </Grid>
 </Window>
