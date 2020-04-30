@@ -51,7 +51,6 @@ namespace DrawingApp
                     break;
                 case "1":
                     shape = new Ellipse();
-                    Trace.WriteLine("Drawing ellipse!");
                     break;
                 default:
                     shape = new Rectangle();
