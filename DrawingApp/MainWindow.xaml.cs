@@ -21,6 +21,7 @@ namespace DrawingApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        /*
         private Point startPoint;
         private string shapeName = "rectangle";
         private Shape shape;
@@ -29,8 +30,19 @@ namespace DrawingApp
         private SolidColorBrush colour = Brushes.Red;
         private int stroke;
         private Point mouseOffset;
+        */
+
+        public CanvasShape selected = null;
+        private string currentAction = "select";
+        private CommandInvoker invoker;
+
+        public MainWindow()
+        {
+            invoker = new CommandInvoker(this);
+        }
 
         #region Drawing
+            /*
         private void Draw(object sender, MouseButtonEventArgs e)
         {
             try
@@ -107,9 +119,11 @@ namespace DrawingApp
             Canvas.SetLeft(shape, x);
             Canvas.SetTop(shape, y);
         }
+        */
         #endregion
 
         #region Selection
+            /*
         private void Select(object sender, MouseButtonEventArgs e)
         {
             Shape shape = (Shape)sender;
@@ -143,11 +157,13 @@ namespace DrawingApp
             Canvas.SetLeft(selected, x - mouseOffset.X);
             Canvas.SetTop(selected, y - mouseOffset.Y);
         }
+        */
         #endregion
 
         #region Button handling
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            /*
             switch (actionBox.SelectedIndex)    //TODO: Command pattern
             {
                 case 0:
@@ -155,26 +171,26 @@ namespace DrawingApp
                     break;
                 default:
                     break;
-            }
+            }*/
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            shape = null;
+            //shape = null;
         }
-
+        
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
-                selected.StrokeDashArray = null;
-                selected = null;
+                //selected.StrokeDashArray = null;
+                //selected = null;
             }
         }
-
+        
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            switch (actionBox.SelectedIndex)    //TODO: Command pattern
+            /*switch (actionBox.SelectedIndex)    //TODO: Command pattern
             {
                 case 0:
                     DrawMove(sender, e);
@@ -185,11 +201,11 @@ namespace DrawingApp
                         SelectMove(e);
                     }
                     break;
-            }
+            }*/
         }
-
+        
         private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
+        {/*
             if (selected != null)
             {
                 Shape s = (Shape)selected;
@@ -198,8 +214,33 @@ namespace DrawingApp
                     s.Width += e.Delta;
                     s.Height += e.Delta;
                 }
-            }
+            }*/
         }
         #endregion
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            CommandInvoker.Save();
+        }
+
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            CommandInvoker.Load();
+        }
+
+        private void SelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            currentAction = "select";
+        }
+
+        private void EllipseButton_Click(object sender, RoutedEventArgs e)
+        {
+            currentAction = "ellipse";
+        }
+
+        private void RectangleButton_Click(object sender, RoutedEventArgs e)
+        {
+            currentAction = "rectangle";
+        }
     }
 }

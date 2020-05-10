@@ -5,9 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DrawingApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="DrawingApp" Height="675" Width="1200"
         KeyDown="Window_KeyDown">
-    <Grid>
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Border Background="#6C91BF" BorderBrush="Black" BorderThickness="0,0,0,2">
+            <Grid x:Name="Navbar" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="6*"/>
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="Buttons" Grid.Row="0" Margin="0,2" Opacity="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" x:Name="SaveColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="LoadColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="SelectColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="EllipseColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="RectangleColumn"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="SaveButton" Grid.Column="0" Margin="2,0" Click="SaveButton_Click" Background="Red">
+                        <Image Source="Img/save.png" Margin="0,5"/>
+                    </Button>
+                    <Button x:Name="LoadButton" Grid.Column="1" Margin="2,0" Click="LoadButton_Click" Background="Yellow">
+                        <Image Source="Img/load.png"/>
+                    </Button>
+                    <Button x:Name="SelectButton" Grid.Column="2" Margin="2,0" Click="SelectButton_Click" Background="Green">
+                        <Image Source="Img/select.png" Margin="0,5"/>
+                    </Button>
+                    <Button x:Name="EllipseButton" Grid.Column="3" Margin="2,0" Click="EllipseButton_Click" Background="Blue">
+                        <Image Source="Img/ellipse.png" Margin="0,3"/>
+                    </Button>
+                    <Button x:Name="RectangleButton" Grid.Column="4" Margin="2,0" Click="RectangleButton_Click" Background="Purple">
+                        <Image Source="Img/rectangle.png" Margin="0,3"/>
+                    </Button>
+                </Grid>
+            </Grid>
+            
+        </Border>
+
+        <!--
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
@@ -39,7 +78,7 @@
             <ComboBoxItem IsSelected="True">Draw</ComboBoxItem>
             <ComboBoxItem>Move</ComboBoxItem>
         </ComboBox>
-
+-->
         <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" MouseUp="Canvas_MouseUp" Background="Transparent" Grid.ColumnSpan="6" Margin="0,0,-250,-383" Grid.Row="2" />
     </Grid>
 </Window>
