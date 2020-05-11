@@ -14,11 +14,10 @@ namespace DrawingApp
     {
         private Stack<String> actionsDone, actionsUndone;
         private MainWindow mainWindow;
-        //private List<KeyValuePair<Shape, CanvasShape>> map = new List<KeyValuePair<Shape, CanvasShape>>();
         private Dictionary<Shape, CanvasShape> map = new Dictionary<Shape, CanvasShape>();
         private SolidColorBrush color = Brushes.Red;
         private float stroke = 3;
-        private Canvas canvas;
+        private double mouseOffsetX = -999, mouseOffsetY = -999;
 
         public CommandInvoker(MainWindow mainWindow)
         {
@@ -52,16 +51,25 @@ namespace DrawingApp
         {
             Draw(p1.X, p1.Y, p2.X, p2.Y, shape);
         }
-
-        public void FinalizeDrawing()
-        {
-            
-        }
         #endregion
 
-        public void Move(CanvasShape shape)
+        public void Move(CanvasShape shape, MouseEventArgs e, Point initialPos)
         {
-            throw new NotImplementedException();
+            Point relativePos = e.GetPosition(shape.GetShape());
+            Point absolutePos = e.GetPosition(mainWindow.canvas);
+
+            if (mouseOffsetX == -999 || mouseOffsetY == -999)
+            {
+                //double x = absolutePos.X + (initialPos.X - Canvas.GetLeft(shape.GetShape()));
+                //double y = absolutePos.Y + (initialPos.Y - Canvas.GetTop(shape.GetShape()));
+                mouseOffsetX = initialPos.X - Canvas.GetLeft(shape.GetShape());
+                mouseOffsetY = initialPos.Y - Canvas.GetTop(shape.GetShape());
+            }
+
+            double x = absolutePos.X - mouseOffsetX;
+            double y = absolutePos.Y - mouseOffsetY;
+
+            mainWindow.SetCanvasOffset(new Point(x, y), shape.GetShape());
         }
 
         public void Undo()
@@ -90,16 +98,18 @@ namespace DrawingApp
 
         private void Select(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Shape)
+            if (sender is Shape && mainWindow.currentAction == "select")
             {
                 Shape shape = (Shape)sender;
                 CanvasShape parent = map[shape];
                 if (mainWindow.selected != null)
                 {
                     mainWindow.selected.Unselect();
+                    mainWindow.selected = null;
                 }
-                if (sender is Shape)
+                if (mainWindow.selected != parent)
                 {
+                    mainWindow.selected = parent;
                     parent.Select();
                 }
             }

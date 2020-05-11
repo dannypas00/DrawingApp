@@ -20,12 +20,19 @@ namespace DrawingApp
         public void Unselect()
         {
             selected = false;
+            shape.StrokeDashArray = null;
         }
 
         public CanvasShape Select()
         {
             selected = true;
+            shape.StrokeDashArray = new System.Windows.Media.DoubleCollection() { 1 };
             return this;
+        }
+
+        public Shape GetShape()
+        {
+            return shape;
         }
     }
 }

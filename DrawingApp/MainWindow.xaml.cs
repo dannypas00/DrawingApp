@@ -33,7 +33,7 @@ namespace DrawingApp
         */
 
         public CanvasShape selected = null;
-        private string currentAction = "select";
+        public string currentAction = "select";
         private CommandInvoker invoker;
         private bool mouseButtonHeld = false;
         private Point initialPosition;
@@ -49,123 +49,125 @@ namespace DrawingApp
         {
             Canvas.SetLeft(shape, offset.X);
             Canvas.SetTop(shape, offset.Y);
+            Trace.WriteLine("Setting new pos to " + offset.X + ", " + offset.Y);
         }
-            /*
-        private void Draw(object sender, MouseButtonEventArgs e)
+
+        /*
+    private void Draw(object sender, MouseButtonEventArgs e)
+    {
+        try
         {
-            try
-            {
-                stroke = Convert.ToInt16(strokeSize.Text);
-            }
-            catch (Exception)
-            {
-                stroke = 3;
-            }
-
-            shapeName = shapeBox.SelectedIndex.ToString();
-
-            switch (shapeName)
-            {
-                case "0":
-                    shape = new Rectangle();
-                    break;
-                case "1":
-                    shape = new Ellipse();
-                    break;
-                default:
-                    shape = new Rectangle();
-                    break;
-            }
-
-            shape.MouseDown += new MouseButtonEventHandler(Select);
-            startPoint = e.GetPosition(canvas);
-            shape.Fill = (bool)fill.IsChecked ? colour : Brushes.Transparent;
-            shape.Stroke = colour;
-            shape.StrokeThickness = stroke;
-            Canvas.SetLeft(shape, startPoint.X);
-            Canvas.SetTop(shape, startPoint.Y);
-            canvas.Children.Add(shape);
+            stroke = Convert.ToInt16(strokeSize.Text);
         }
-
-        private void DrawMove(object sender, MouseEventArgs e)
+        catch (Exception)
         {
-            if (e.LeftButton == MouseButtonState.Released || shape == null)
-                return;
-
-            Point pos = e.GetPosition(canvas);
-
-            double x = Math.Min(pos.X, startPoint.X);
-            double y = Math.Min(pos.Y, startPoint.Y);
-
-            double w = Math.Max(pos.X, startPoint.X) - x;
-            double h = Math.Max(pos.Y, startPoint.Y) - y;
-
-            shape.Width = w;
-            shape.Height = h;
-
-            Canvas.SetLeft(shape, x);
-            Canvas.SetTop(shape, y);
+            stroke = 3;
         }
-        
-        private void ResizeMove(object sender, MouseEventArgs e)
+
+        shapeName = shapeBox.SelectedIndex.ToString();
+
+        switch (shapeName)
         {
-            if (e.LeftButton == MouseButtonState.Released || shape == null)
-                return;
-
-            Point pos = e.GetPosition(canvas);
-            Point selectedPos = new Point(Canvas.GetLeft(selected), Canvas.GetTop(selected));
-
-            double x = Math.Min(pos.X, selectedPos.X);
-            double y = Math.Min(pos.Y, selectedPos.Y);
-
-            double w = Math.Max(pos.X, startPoint.X) - x;
-            double h = Math.Max(pos.Y, startPoint.Y) - y;
-
-            shape.Width = w;
-            shape.Height = h;
-
-            Canvas.SetLeft(shape, x);
-            Canvas.SetTop(shape, y);
+            case "0":
+                shape = new Rectangle();
+                break;
+            case "1":
+                shape = new Ellipse();
+                break;
+            default:
+                shape = new Rectangle();
+                break;
         }
-        */
+
+        shape.MouseDown += new MouseButtonEventHandler(Select);
+        startPoint = e.GetPosition(canvas);
+        shape.Fill = (bool)fill.IsChecked ? colour : Brushes.Transparent;
+        shape.Stroke = colour;
+        shape.StrokeThickness = stroke;
+        Canvas.SetLeft(shape, startPoint.X);
+        Canvas.SetTop(shape, startPoint.Y);
+        canvas.Children.Add(shape);
+    }
+
+    private void DrawMove(object sender, MouseEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Released || shape == null)
+            return;
+
+        Point pos = e.GetPosition(canvas);
+
+        double x = Math.Min(pos.X, startPoint.X);
+        double y = Math.Min(pos.Y, startPoint.Y);
+
+        double w = Math.Max(pos.X, startPoint.X) - x;
+        double h = Math.Max(pos.Y, startPoint.Y) - y;
+
+        shape.Width = w;
+        shape.Height = h;
+
+        Canvas.SetLeft(shape, x);
+        Canvas.SetTop(shape, y);
+    }
+
+    private void ResizeMove(object sender, MouseEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Released || shape == null)
+            return;
+
+        Point pos = e.GetPosition(canvas);
+        Point selectedPos = new Point(Canvas.GetLeft(selected), Canvas.GetTop(selected));
+
+        double x = Math.Min(pos.X, selectedPos.X);
+        double y = Math.Min(pos.Y, selectedPos.Y);
+
+        double w = Math.Max(pos.X, startPoint.X) - x;
+        double h = Math.Max(pos.Y, startPoint.Y) - y;
+
+        shape.Width = w;
+        shape.Height = h;
+
+        Canvas.SetLeft(shape, x);
+        Canvas.SetTop(shape, y);
+    }
+    */
         #endregion
 
         #region Selection
-            /*
-        private void Select(object sender, MouseButtonEventArgs e)
+        /*
+    private void Select(object sender, MouseButtonEventArgs e)
+    {
+        Shape shape = (Shape)sender;
+        if (selected == shape || actionBox.SelectedIndex == 0)
         {
-            Shape shape = (Shape)sender;
-            if (selected == shape || actionBox.SelectedIndex == 0)
-            {
-                selected.StrokeDashArray = null;
-                selected = null;
-                return;
-            }
-            Trace.WriteLine("Selected something!");
-            if (selected != null)
-            {
-                selected.StrokeDashArray = null;
-            }
-            selected = shape;
-            mouseOffset = e.GetPosition(shape);
-            shape.StrokeDashArray = new DoubleCollection() { 1 };
-
-            double x = Canvas.GetLeft(shape);
-            selectedPosition.X = x;
-
-            double y = Canvas.GetTop(shape);
-            selectedPosition.Y = y;
+            selected.StrokeDashArray = null;
+            selected = null;
+            return;
         }
-
-        private void SelectMove(MouseEventArgs e)
+        Trace.WriteLine("Selected something!");
+        if (selected != null)
         {
-            double x = e.GetPosition(canvas).X;
-            double y = e.GetPosition(canvas).Y;
-
-            Canvas.SetLeft(selected, x - mouseOffset.X);
-            Canvas.SetTop(selected, y - mouseOffset.Y);
+            selected.StrokeDashArray = null;
         }
-        */
+        selected = shape;
+        mouseOffset = e.GetPosition(shape);
+        shape.StrokeDashArray = new DoubleCollection() { 1 };
+
+        double x = Canvas.GetLeft(shape);
+        selectedPosition.X = x;
+
+        double y = Canvas.GetTop(shape);
+        selectedPosition.Y = y;
+    }
+
+    private void SelectMove(MouseEventArgs e)
+    {
+        double x = e.GetPosition(canvas).X;
+        double y = e.GetPosition(canvas).Y;
+
+        Canvas.SetLeft(selected, x - mouseOffset.X);
+        Canvas.SetTop(selected, y - mouseOffset.Y);
+    }
+    */
         #endregion
 
         #region Button handling
@@ -196,7 +198,7 @@ namespace DrawingApp
                 drawingShape = null;
             }
         }
-        
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -205,7 +207,7 @@ namespace DrawingApp
                 //selected = null;
             }
         }
-        
+
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (mouseButtonHeld == true)
@@ -216,12 +218,15 @@ namespace DrawingApp
                     case "rectangle":
                         invoker.Draw(initialPosition, e.GetPosition(canvas), drawingShape);
                         break;
+                    case "select":
+                        invoker.Move(selected, e, initialPosition);
+                        break;
                     default:
                         break;
                 }
             }
         }
-        
+
         private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {/*
             if (selected != null)
@@ -253,11 +258,21 @@ namespace DrawingApp
         private void EllipseButton_Click(object sender, RoutedEventArgs e)
         {
             currentAction = "ellipse";
+            if (selected != null)
+            {
+                selected.Unselect();
+                selected = null;
+            }
         }
 
         private void RectangleButton_Click(object sender, RoutedEventArgs e)
         {
             currentAction = "rectangle";
+            if (selected != null)
+            {
+                selected.Unselect();
+                selected = null;
+            }
         }
         #endregion
     }
