@@ -86,6 +86,23 @@ namespace DrawingApp
             throw new NotImplementedException();
         }
 
+        public void Resize(CanvasShape shape, MouseWheelEventArgs e)
+        {
+            double factor = -e.Delta;
+            //factor = Math.Sign(factor) == -1 ? 1 / Math.Abs(factor) : factor;
+            double multiplier = 0.005;
+            if (Math.Sign(factor) != -1)
+            {
+                shape.GetShape().Width *= factor * multiplier; // * multiplier;
+                shape.GetShape().Height *= factor * multiplier; // * multiplier;
+            }
+            else
+            {
+                shape.GetShape().Width /= Math.Abs(factor) * multiplier; // * multiplier;
+                shape.GetShape().Height /= Math.Abs(factor) * multiplier; // * multiplier;
+            }
+        }
+
         internal static void Save()
         {
             throw new NotImplementedException();

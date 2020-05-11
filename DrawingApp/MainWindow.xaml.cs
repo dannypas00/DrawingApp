@@ -228,16 +228,11 @@ namespace DrawingApp
         }
 
         private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
-        {/*
+        {
             if (selected != null)
             {
-                Shape s = (Shape)selected;
-                if (s.Width + e.Delta > 0 && s.Height + e.Delta > 0)
-                {
-                    s.Width += e.Delta;
-                    s.Height += e.Delta;
-                }
-            }*/
+                invoker.Resize(selected, e);
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
