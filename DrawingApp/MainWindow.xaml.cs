@@ -37,6 +37,7 @@ namespace DrawingApp
         private CommandInvoker invoker;
         private bool mouseButtonHeld = false;
         private Point initialPosition;
+        private Shape drawingShape;
 
         public MainWindow()
         {
@@ -44,6 +45,11 @@ namespace DrawingApp
         }
 
         #region Drawing
+        public void SetCanvasOffset(Point offset, Shape shape)
+        {
+            Canvas.SetLeft(shape, offset.X);
+            Canvas.SetTop(shape, offset.Y);
+        }
             /*
         private void Draw(object sender, MouseButtonEventArgs e)
         {
@@ -167,6 +173,17 @@ namespace DrawingApp
         {
             mouseButtonHeld = true;
             initialPosition = e.GetPosition(canvas);
+            switch (currentAction)
+            {
+                case "rectangle":
+                    drawingShape = new Rectangle();
+                    break;
+                case "ellipse":
+                    drawingShape = new Ellipse();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
@@ -175,7 +192,8 @@ namespace DrawingApp
             mouseButtonHeld = false;
             if (currentAction == "rectangle" || currentAction == "ellipse")
             {
-                invoker.FinalizeDrawing();
+                //invoker.FinalizeDrawing();
+                drawingShape = null;
             }
         }
         
@@ -194,8 +212,9 @@ namespace DrawingApp
             {
                 switch (currentAction)    //TODO: Command pattern
                 {
+                    case "ellipse":
                     case "rectangle":
-                        invoker.Draw(initialPosition, e.GetPosition(canvas), new Rectangle());
+                        invoker.Draw(initialPosition, e.GetPosition(canvas), drawingShape);
                         break;
                     default:
                         break;

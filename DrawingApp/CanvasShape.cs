@@ -12,9 +12,9 @@ namespace DrawingApp
         private Point position1 = new Point(), position2 = new Point();
         private Shape shape;
 
-        public CanvasShape()
+        public CanvasShape(Shape shape)
         {
-
+            this.shape = shape;
         }
 
         public void Unselect()
