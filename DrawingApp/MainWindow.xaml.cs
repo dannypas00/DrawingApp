@@ -35,6 +35,8 @@ namespace DrawingApp
         public CanvasShape selected = null;
         private string currentAction = "select";
         private CommandInvoker invoker;
+        private bool mouseButtonHeld = false;
+        private Point initialPosition;
 
         public MainWindow()
         {
@@ -163,20 +165,18 @@ namespace DrawingApp
         #region Button handling
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            /*
-            switch (actionBox.SelectedIndex)    //TODO: Command pattern
-            {
-                case 0:
-                    Draw(sender, e);
-                    break;
-                default:
-                    break;
-            }*/
+            mouseButtonHeld = true;
+            initialPosition = e.GetPosition(canvas);
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             //shape = null;
+            mouseButtonHeld = false;
+            if (currentAction == "rectangle" || currentAction == "ellipse")
+            {
+                invoker.FinalizeDrawing();
+            }
         }
         
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -190,18 +190,17 @@ namespace DrawingApp
         
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            /*switch (actionBox.SelectedIndex)    //TODO: Command pattern
+            if (mouseButtonHeld == true)
             {
-                case 0:
-                    DrawMove(sender, e);
-                    break;
-                case 1:
-                    if (e.LeftButton == MouseButtonState.Pressed && selected != null)
-                    {
-                        SelectMove(e);
-                    }
-                    break;
-            }*/
+                switch (currentAction)    //TODO: Command pattern
+                {
+                    case "rectangle":
+                        invoker.Draw(initialPosition, e.GetPosition(canvas), new Rectangle());
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
         
         private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -216,7 +215,6 @@ namespace DrawingApp
                 }
             }*/
         }
-        #endregion
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -242,5 +240,6 @@ namespace DrawingApp
         {
             currentAction = "rectangle";
         }
+        #endregion
     }
 }
