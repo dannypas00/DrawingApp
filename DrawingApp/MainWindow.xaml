@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:DrawingApp"
         mc:Ignorable="d"
         Title="DrawingApp" Height="675" Width="1200"
-        KeyDown="Window_KeyDown">
+        KeyDown="Window_KeyDown"
+        MouseUp="Window_MouseUp">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -44,6 +45,6 @@
                 </Grid>
             </Grid>
         </Border>
-        <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" MouseUp="Canvas_MouseUp" Background="Transparent" Grid.ColumnSpan="6" Grid.Row="2" />
+        <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" Background="Transparent" Grid.ColumnSpan="6" Grid.Row="2" />
     </Grid>
 </Window>

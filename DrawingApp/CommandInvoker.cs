@@ -60,8 +60,6 @@ namespace DrawingApp
 
             if (mouseOffsetX == -999 || mouseOffsetY == -999)
             {
-                //double x = absolutePos.X + (initialPos.X - Canvas.GetLeft(shape.GetShape()));
-                //double y = absolutePos.Y + (initialPos.Y - Canvas.GetTop(shape.GetShape()));
                 mouseOffsetX = initialPos.X - Canvas.GetLeft(shape.GetShape());
                 mouseOffsetY = initialPos.Y - Canvas.GetTop(shape.GetShape());
             }

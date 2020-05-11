@@ -188,7 +188,7 @@ namespace DrawingApp
             }
         }
 
-        private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
             //shape = null;
             mouseButtonHeld = false;
@@ -219,7 +219,10 @@ namespace DrawingApp
                         invoker.Draw(initialPosition, e.GetPosition(canvas), drawingShape);
                         break;
                     case "select":
-                        invoker.Move(selected, e, initialPosition);
+                        if (selected != null)
+                        {
+                            invoker.Move(selected, e, initialPosition);
+                        }
                         break;
                     default:
                         break;
