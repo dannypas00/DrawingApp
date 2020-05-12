@@ -178,10 +178,10 @@ namespace DrawingApp
             switch (currentAction)
             {
                 case "rectangle":
-                    drawingShape = new Rectangle();
+                    invoker.StartDraw(initialPosition.X, initialPosition.Y, new Rectangle());
                     break;
                 case "ellipse":
-                    drawingShape = new Ellipse();
+                    invoker.StartDraw(initialPosition.X, initialPosition.Y, new Ellipse());
                     break;
                 default:
                     break;
@@ -216,7 +216,7 @@ namespace DrawingApp
                 {
                     case "ellipse":
                     case "rectangle":
-                        invoker.Draw(initialPosition, e.GetPosition(canvas), drawingShape);
+                        invoker.Draw(e.GetPosition(canvas));
                         break;
                     case "select":
                         if (selected != null)

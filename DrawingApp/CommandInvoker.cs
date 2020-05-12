@@ -12,12 +12,9 @@ namespace DrawingApp
 {
     public class CommandInvoker
     {
-        private Stack<String> actionsDone, actionsUndone;
-        private MainWindow mainWindow;
-        private Dictionary<Shape, CanvasShape> map = new Dictionary<Shape, CanvasShape>();
-        private SolidColorBrush color = Brushes.Red;
-        private float stroke = 3;
-        private double mouseOffsetX = -999, mouseOffsetY = -999;
+        private Stack<Command> actionsDone = new Stack<Command>(), actionsUndone = new Stack<Command>();
+        public MainWindow mainWindow;
+        public Dictionary<Shape, CanvasShape> map = new Dictionary<Shape, CanvasShape>();
 
         public CommandInvoker(MainWindow mainWindow)
         {
@@ -25,56 +22,54 @@ namespace DrawingApp
         }
 
         #region Drawing
-        public void Draw(double x1, double y1, double x2, double y2, Shape shape)
+        public void StartDraw(double x1, double y1, Shape shape)
         {
-            if (!map.ContainsKey(shape))
-            {
-                CanvasShape canvShape = new CanvasShape(shape);
-                map.Add(shape, canvShape);
-                shape.MouseDown += new MouseButtonEventHandler(Select);
-                shape.Fill = color;
-                shape.Stroke = color;
-                shape.StrokeThickness = stroke;
-                mainWindow.canvas.Children.Add(shape);
-            }
-            double x = Math.Min(x1, x2);    //Om **Maxime's** bug te voorkomen
-            double y = Math.Min(y1, y2);    //Om **Maxime's** bug te voorkomen
-            
-            double w = Math.Max(x1, x2) - x;//Om **Maxime's** bug te voorkomen
-            double h = Math.Max(y1, y2) - y;//Om **Maxime's** bug te voorkomen
-            mainWindow.SetCanvasOffset(new Point(x, y), shape);
-            shape.Width = w;
-            shape.Height = h;
+            Command cmd = new CommandDraw(x1, y1, shape, this);
+            actionsDone.Push(cmd);
         }
 
-        public void Draw(Point p1, Point p2, Shape shape)
+        public void Draw(double x2, double y2)
         {
-            Draw(p1.X, p1.Y, p2.X, p2.Y, shape);
+            CommandDraw cmd = (CommandDraw)actionsDone.Pop();
+            cmd.Execute(x2, y2);
+            actionsDone.Push(cmd);
+        }
+
+        public void Draw(Point p2)
+        {
+            Draw(p2.X, p2.Y);
         }
         #endregion
 
+        #region Move
+        public void StartMove(CanvasShape shape, Point initialPos)
+        {
+            Command cmd = new CommandMove(shape, initialPos, mainWindow);
+            actionsDone.Push(cmd);
+        }
+
         public void Move(CanvasShape shape, MouseEventArgs e, Point initialPos)
         {
-            Point relativePos = e.GetPosition(shape.GetShape());
-            Point absolutePos = e.GetPosition(mainWindow.canvas);
+            CommandMove cmd = (CommandMove)actionsDone.Pop();
+            cmd.Execute(e);
+            actionsDone.Push(cmd);
+        }
+        #endregion
 
-            if (mouseOffsetX == -999 || mouseOffsetY == -999)
-            {
-                mouseOffsetX = initialPos.X - Canvas.GetLeft(shape.GetShape());
-                mouseOffsetY = initialPos.Y - Canvas.GetTop(shape.GetShape());
-            }
-
-            double x = absolutePos.X - mouseOffsetX;
-            double y = absolutePos.Y - mouseOffsetY;
-
-            mainWindow.SetCanvasOffset(new Point(x, y), shape.GetShape());
+        public void Resize(CanvasShape shape, MouseWheelEventArgs e)
+        {
+            CommandResize cmd = new CommandResize();
+            cmd.Execute(shape, e);
+            actionsDone.Push(cmd);
         }
 
         public void Undo()
         {
             //Undo top action on actionsDone stack
             //Push undone action to actionsUndone stack
-            throw new NotImplementedException();
+            Command cmd = actionsDone.Pop();
+            cmd.Undo();
+            actionsUndone.Push(cmd);
         }
 
         public void Redo()
@@ -84,22 +79,7 @@ namespace DrawingApp
             throw new NotImplementedException();
         }
 
-        public void Resize(CanvasShape shape, MouseWheelEventArgs e)
-        {
-            double factor = -e.Delta;
-            //factor = Math.Sign(factor) == -1 ? 1 / Math.Abs(factor) : factor;
-            double multiplier = 0.005;
-            if (Math.Sign(factor) != -1)
-            {
-                shape.GetShape().Width *= factor * multiplier; // * multiplier;
-                shape.GetShape().Height *= factor * multiplier; // * multiplier;
-            }
-            else
-            {
-                shape.GetShape().Width /= Math.Abs(factor) * multiplier; // * multiplier;
-                shape.GetShape().Height /= Math.Abs(factor) * multiplier; // * multiplier;
-            }
-        }
+        
 
         internal static void Save()
         {
@@ -109,25 +89,6 @@ namespace DrawingApp
         internal static void Load()
         {
             throw new NotImplementedException();
-        }
-
-        private void Select(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is Shape && mainWindow.currentAction == "select")
-            {
-                Shape shape = (Shape)sender;
-                CanvasShape parent = map[shape];
-                if (mainWindow.selected != null)
-                {
-                    mainWindow.selected.Unselect();
-                    mainWindow.selected = null;
-                }
-                if (mainWindow.selected != parent)
-                {
-                    mainWindow.selected = parent;
-                    parent.Select();
-                }
-            }
         }
     }
 }
