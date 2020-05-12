@@ -94,12 +94,12 @@ namespace DrawingApp
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            CommandInvoker.Save();
+            invoker.Save();
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
-            CommandInvoker.Load();
+            invoker.Load();
         }
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)

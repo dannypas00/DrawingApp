@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,16 +80,23 @@ namespace DrawingApp
             throw new NotImplementedException();
         }
 
-        
-
-        internal static void Save()
+        public void Save()
         {
-            throw new NotImplementedException();
+            CommandSave cmd = new CommandSave();
+            cmd.Execute(map);
         }
 
-        internal static void Load()
+        public void Load()
         {
-            throw new NotImplementedException();
+            CommandLoad cmd = new CommandLoad();
+            cmd.Execute(this);
+        }
+
+        public void Clear()
+        {
+            CommandClear cmd = new CommandClear(this);
+            cmd.Execute();
+            actionsDone.Push(cmd);
         }
     }
 }
