@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:DrawingApp"
         mc:Ignorable="d"
         Title="DrawingApp" Height="675" Width="1200"
-        KeyDown="Window_KeyDown"
         MouseUp="Window_MouseUp">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
