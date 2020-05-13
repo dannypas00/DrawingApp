@@ -6,11 +6,12 @@ using System.Windows.Shapes;
 
 namespace DrawingApp
 {
-    public class CanvasShape
+    public class CanvasShape : IGroupable
     {
         private bool selected = false;
         private Point position1 = new Point(), position2 = new Point();
         private Shape shape;
+        private Group parent;
 
         public CanvasShape(Shape shape)
         {
@@ -33,6 +34,11 @@ namespace DrawingApp
         public Shape GetShape()
         {
             return shape;
+        }
+
+        public Group GetParent()
+        {
+            return parent;
         }
     }
 }

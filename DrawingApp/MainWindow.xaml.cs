@@ -24,12 +24,14 @@ namespace DrawingApp
         public CanvasShape selected = null;
         public string currentAction = "select";
         private CommandInvoker invoker;
+        public Group file;
         private bool mouseButtonHeld = false;
         private Point initialPosition;
 
         public MainWindow()
         {
             invoker = new CommandInvoker(this);
+            file = new Group();
         }
 
         public void SetCanvasOffset(Point offset, Shape shape)
@@ -143,7 +145,7 @@ namespace DrawingApp
 
         private void AddGroup_Click(object sender, RoutedEventArgs e)
         {
-
+            throw new NotImplementedException();
         }
         #endregion
     }

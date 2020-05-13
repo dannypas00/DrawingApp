@@ -24,6 +24,7 @@ namespace DrawingApp
             this.shape = shape;
             
             canvShape = new CanvasShape(shape);
+            invoker.mainWindow.file.AddChild(canvShape);
             invoker.map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
             shape.Fill = Brushes.Red;
