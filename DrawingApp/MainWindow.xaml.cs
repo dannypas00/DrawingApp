@@ -106,6 +106,15 @@ namespace DrawingApp
         {
             currentAction = "select";
         }
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
+        {
+            invoker.Undo();
+        }
+
+        private void RedoButton_Click(object sender, RoutedEventArgs e)
+        {
+            invoker.Redo();
+        }
 
         private void EllipseButton_Click(object sender, RoutedEventArgs e)
         {
@@ -115,6 +124,11 @@ namespace DrawingApp
                 selected.Unselect();
                 selected = null;
             }
+        }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            invoker.Clear();
         }
 
         private void RectangleButton_Click(object sender, RoutedEventArgs e)

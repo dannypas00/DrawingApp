@@ -46,6 +46,11 @@ namespace DrawingApp
             file.Close();
         }
 
+        public void Redo()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Undo()
         {
             throw new NotImplementedException();

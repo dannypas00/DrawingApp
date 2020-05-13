@@ -77,7 +77,9 @@ namespace DrawingApp
         {
             //Redo top action on actionsUndone stack
             //Push redone action to actionsDone stack
-            throw new NotImplementedException();
+            Command cmd = actionsUndone.Pop();
+            cmd.Redo();
+            actionsDone.Push(cmd);
         }
 
         public void Save()

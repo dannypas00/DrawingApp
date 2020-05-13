@@ -31,6 +31,11 @@ namespace DrawingApp
             mainWindow.SetCanvasOffset(new Point(x, y), shape.GetShape());
         }
 
+        public void Redo()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Undo()
         {
             throw new NotImplementedException();

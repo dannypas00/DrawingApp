@@ -25,6 +25,9 @@
                         <ColumnDefinition Width="1*" x:Name="SelectColumn"/>
                         <ColumnDefinition Width="1*" x:Name="EllipseColumn"/>
                         <ColumnDefinition Width="1*" x:Name="RectangleColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="UndoColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="RedoColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="ClearColumn"/>
                     </Grid.ColumnDefinitions>
                     <Button x:Name="SaveButton" Grid.Column="0" Margin="2,0" Click="SaveButton_Click" Background="Red">
                         <Image Source="Img/save.png" Margin="0,5"/>
@@ -40,6 +43,15 @@
                     </Button>
                     <Button x:Name="RectangleButton" Grid.Column="4" Margin="2,0" Click="RectangleButton_Click" Background="Purple">
                         <Image Source="Img/rectangle.png" Margin="0,3"/>
+                    </Button>
+                    <Button x:Name="UndoButton" Grid.Column="5" Margin="2,0" Click="UndoButton_Click" Background="DimGray">
+                        <Image Source="Img/undo.png" Margin="0,3"/>
+                    </Button>
+                    <Button x:Name="RedoButton" Grid.Column="6" Margin="2,0" Click="RedoButton_Click" Background="DimGray">
+                        <Image Source="Img/redo.png" Margin="0,3"/>
+                    </Button>
+                    <Button x:Name="ClearButton" Grid.Column="7" Margin="2,0" Click="ClearButton_Click" Background="DimGray">
+                        <Image Source="Img/clear.png" Margin="0,3"/>
                     </Button>
                 </Grid>
             </Grid>

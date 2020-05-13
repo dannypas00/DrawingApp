@@ -7,14 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Img\clear.png" />
     <None Remove="Img\ellipse.png" />
     <None Remove="Img\load.png" />
     <None Remove="Img\rectangle.png" />
+    <None Remove="Img\redo.png" />
     <None Remove="Img\save.png" />
     <None Remove="Img\select.png" />
+    <None Remove="Img\undo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Img\clear.png" />
     <Resource Include="Img\ellipse.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -24,10 +28,16 @@
     <Resource Include="Img\rectangle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Img\redo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Img\save.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Img\select.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Img\undo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

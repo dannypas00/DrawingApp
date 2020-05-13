@@ -49,9 +49,15 @@ namespace DrawingApp
             this.y2 = y2;
         }
 
-        public void Undo()
+        public void Redo()
         {
             throw new NotImplementedException();
+        }
+
+        public void Undo()
+        {
+            invoker.map.Remove(shape);
+            invoker.mainWindow.canvas.Children.Remove(shape);
         }
 
         private void Select(object sender, MouseButtonEventArgs e)

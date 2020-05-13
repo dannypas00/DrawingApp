@@ -19,6 +19,7 @@ namespace DrawingApp
 
         public void Execute(Dictionary<Shape, CanvasShape> map)
         {
+
             Shape[] shapes = map.Keys.ToArray();
             List<string> lines = new List<string>();
             foreach (Shape shape in shapes)
@@ -37,6 +38,11 @@ namespace DrawingApp
             var pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
             var filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
             System.IO.File.WriteAllLines(filePath, lines);
+        }
+
+        public void Redo()
+        {
+            throw new NotImplementedException();
         }
 
         public void Undo()

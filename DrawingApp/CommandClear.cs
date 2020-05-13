@@ -21,18 +21,24 @@ namespace DrawingApp
         public void Execute()
         {
             removed = invoker.mainWindow.canvas.Children;
-            for (int i = invoker.mainWindow.canvas.Children.Count - 1; i > 0; i--)
+            for (int i = invoker.mainWindow.canvas.Children.Count - 1; i > -1; i--)
             {
                 invoker.map.Remove((Shape)invoker.mainWindow.canvas.Children[i]);
                 invoker.mainWindow.canvas.Children.RemoveAt(i);
             }
         }
 
+        public void Redo()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Undo()
         {
-            foreach(UIElement element in removed) 
+            foreach (Shape shape in removed)
             {
-                invoker.mainWindow.canvas.Children.Add(element);
+                CommandDraw cmd = new CommandDraw(Canvas.GetLeft(shape), Canvas.GetTop(shape), shape, invoker);
+                //invoker.mainWindow.canvas.Children.Add(element);
             }
         }
     }

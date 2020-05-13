@@ -7,5 +7,6 @@ namespace DrawingApp
     interface Command
     {
         public void Undo();
+        public void Redo();
     }
 }
