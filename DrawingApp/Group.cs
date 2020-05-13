@@ -11,6 +11,7 @@ namespace DrawingApp
         private Group parent;
         private string name = "";
         private int brothers = 0;
+        private int depth = 0;
 
         public Group(Group parent = null)
         {
@@ -25,6 +26,12 @@ namespace DrawingApp
             else
             {
                 this.name = "Group 1";
+            }
+            Group previewParent = parent;
+            while (previewParent != null)
+            {
+                depth++;
+                previewParent = previewParent.GetParent();
             }
         }
 
@@ -56,6 +63,11 @@ namespace DrawingApp
         public string GetName()
         {
             return name;
+        }
+
+        public int GetDepth()
+        {
+            return depth;
         }
     }
 }

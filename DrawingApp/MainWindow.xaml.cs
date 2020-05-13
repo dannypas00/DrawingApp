@@ -27,6 +27,7 @@ namespace DrawingApp
         public Group file;
         private bool mouseButtonHeld = false;
         private Point initialPosition;
+        private bool hasUpdatedGroups = false;
 
         public MainWindow()
         {
@@ -38,12 +39,16 @@ namespace DrawingApp
         {
             Canvas.SetLeft(shape, offset.X);
             Canvas.SetTop(shape, offset.Y);
-            Trace.WriteLine("Setting new pos to " + offset.X + ", " + offset.Y);
         }
 
         #region Button handling
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (!hasUpdatedGroups)
+            {
+                invoker.UpdateGroups();
+                hasUpdatedGroups = true;
+            }
             mouseButtonHeld = true;
             initialPosition = e.GetPosition(canvas);
             switch (currentAction)
@@ -145,7 +150,7 @@ namespace DrawingApp
 
         private void AddGroup_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            invoker.UpdateGroups();
         }
         #endregion
     }

@@ -28,6 +28,7 @@
                         <ColumnDefinition Width="1*" x:Name="UndoColumn"/>
                         <ColumnDefinition Width="1*" x:Name="RedoColumn"/>
                         <ColumnDefinition Width="1*" x:Name="ClearColumn"/>
+                        <ColumnDefinition Width="1*" x:Name="AddGroupColumn"/>
                     </Grid.ColumnDefinitions>
                     <Button x:Name="SaveButton" Grid.Column="0" Margin="2,0" Click="SaveButton_Click" Background="Red">
                         <Image Source="Img/save.png" Margin="0,5"/>
@@ -53,6 +54,9 @@
                     <Button x:Name="ClearButton" Grid.Column="7" Margin="2,0" Click="ClearButton_Click" Background="DimGray">
                         <Image Source="Img/clear.png" Margin="0,3"/>
                     </Button>
+                    <Button x:Name="AddGroup" Grid.Column="8" Margin="2,0" Click="AddGroup_Click" Background="DimGray">
+                        <Image Source="Img/plus.png" Margin="0,3"/>
+                    </Button>
                 </Grid>
             </Grid>
         </Border>
@@ -62,17 +66,7 @@
                 <ColumnDefinition Width="1*" x:Name="SidebarColumn"/>
             </Grid.ColumnDefinitions>
             <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" Background="Transparent" Grid.ColumnSpan="5" Grid.Column="0" />
-            <ListBox x:Name="groups" Background="DimGray" Grid.Column="1">
-                <Grid x:Name="GroupsAndAdd" Width="109" Height="20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*" x:Name="GroupsTextField"/>
-                        <ColumnDefinition Width="1*" x:Name="AddGroupButtonField"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="GroupsTextBox" Grid.Column="0">Groups:</TextBlock>
-                    <Button x:Name="AddGroup" Grid.Column="1" IsEnabled="True" Click="AddGroup_Click">
-                        <Image Source="Img/plus.png" Margin="0,3"/>
-                    </Button>
-                </Grid>
+            <ListBox x:Name="groups" Background="Transparent" Grid.Column="1" Margin="0 30 0 0">
             </ListBox>
         </Grid>
     </Grid>

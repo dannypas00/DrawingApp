@@ -12,10 +12,26 @@ namespace DrawingApp
         private Point position1 = new Point(), position2 = new Point();
         private Shape shape;
         private Group parent;
+        private string name = "";
+        private int depth = 0;
 
         public CanvasShape(Shape shape)
         {
             this.shape = shape;
+            if (shape is System.Windows.Shapes.Rectangle)
+            {
+                name = "rectangle";
+            }
+            else if (shape is Ellipse)
+            {
+                name = "ellipse";
+            }
+            Group previewParent = parent;
+            while (previewParent != null)
+            {
+                depth++;
+                previewParent = previewParent.GetParent();
+            }
         }
 
         public void Unselect()
@@ -39,6 +55,16 @@ namespace DrawingApp
         public Group GetParent()
         {
             return parent;
+        }
+
+        public string GetName()
+        {
+            return name;
+        }
+
+        public int GetDepth()
+        {
+            return depth;
         }
     }
 }

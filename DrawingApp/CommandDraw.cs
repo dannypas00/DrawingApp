@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,6 +32,7 @@ namespace DrawingApp
             shape.Stroke = Brushes.Red;
             shape.StrokeThickness = 3;
             invoker.mainWindow.canvas.Children.Add(shape);
+            Trace.WriteLine(invoker.mainWindow.groups.SelectedItem.ToString());
         }
 
         public void Execute(double x2, double y2)

@@ -7,5 +7,7 @@ namespace DrawingApp
     public interface IGroupable
     {
         public Group GetParent();
+        public string GetName();
+        public int GetDepth();
     }
 }

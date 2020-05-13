@@ -104,5 +104,11 @@ namespace DrawingApp
             cmd.Execute();
             actionsDone.Push(cmd);
         }
+
+        public void UpdateGroups()
+        {
+            CommandUpdateGroups cmd = new CommandUpdateGroups();
+            cmd.Execute(mainWindow);
+        }
     }
 }
