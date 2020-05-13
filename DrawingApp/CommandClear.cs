@@ -21,13 +21,10 @@ namespace DrawingApp
         public void Execute()
         {
             removed = invoker.mainWindow.canvas.Children;
-            for (int i = 0; i < invoker.mainWindow.canvas.Children.Count; i++)
+            for (int i = invoker.mainWindow.canvas.Children.Count - 1; i > 0; i--)
             {
+                invoker.map.Remove((Shape)invoker.mainWindow.canvas.Children[i]);
                 invoker.mainWindow.canvas.Children.RemoveAt(i);
-            }
-            foreach (Shape shape in invoker.map.Keys)
-            {
-                invoker.map.Remove(shape);
             }
         }
 
