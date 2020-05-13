@@ -56,6 +56,24 @@
                 </Grid>
             </Grid>
         </Border>
-        <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" Background="Transparent" Grid.ColumnSpan="6" Grid.Row="2" />
+        <Grid Grid.ColumnSpan="6" Grid.Row="1" x:Name="WorkingField">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*" x:Name="CanvasColumnn"/>
+                <ColumnDefinition Width="1*" x:Name="SidebarColumn"/>
+            </Grid.ColumnDefinitions>
+            <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" Background="Transparent" Grid.ColumnSpan="5" Grid.Column="0" />
+            <ListBox x:Name="groups" Background="DimGray" Grid.Column="1">
+                <Grid x:Name="GroupsAndAdd" Width="109" Height="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*" x:Name="GroupsTextField"/>
+                        <ColumnDefinition Width="1*" x:Name="AddGroupButtonField"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="GroupsTextBox" Grid.Column="0">Groups:</TextBlock>
+                    <Button x:Name="AddGroup" Grid.Column="1" IsEnabled="True" Click="AddGroup_Click">
+                        <Image Source="Img/plus.png" Margin="0,3"/>
+                    </Button>
+                </Grid>
+            </ListBox>
+        </Grid>
     </Grid>
 </Window>

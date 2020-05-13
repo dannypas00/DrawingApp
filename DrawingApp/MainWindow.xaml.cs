@@ -140,6 +140,11 @@ namespace DrawingApp
                 selected = null;
             }
         }
+
+        private void AddGroup_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion
     }
 }
