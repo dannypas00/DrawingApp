@@ -12,20 +12,19 @@ namespace DrawingApp
     class CommandDraw : Command
     {
         private double x1, y1, x2, y2;
-        private Dictionary<Shape, CanvasShape> map;
         private CommandInvoker invoker;
         private Shape shape;
+        private CanvasShape canvShape;
 
         public CommandDraw(double x1, double y1, Shape shape, CommandInvoker invoker)
         {
             this.x1 = x1;
             this.y1 = y1;
-            this.map = invoker.map;
             this.invoker = invoker;
             this.shape = shape;
-
-            CanvasShape canvShape = new CanvasShape(shape);
-            map.Add(shape, canvShape);
+            
+            canvShape = new CanvasShape(shape);
+            invoker.map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
             shape.Fill = Brushes.Red;
             shape.Stroke = Brushes.Red;
@@ -51,7 +50,8 @@ namespace DrawingApp
 
         public void Redo()
         {
-            throw new NotImplementedException();
+            invoker.map.Add(shape, canvShape);
+            invoker.mainWindow.canvas.Children.Add(shape);
         }
 
         public void Undo()
@@ -65,7 +65,7 @@ namespace DrawingApp
             if (sender is Shape && invoker.mainWindow.currentAction == "select")
             {
                 Shape shape = (Shape)sender;
-                CanvasShape parent = map[shape];
+                CanvasShape parent = invoker.map[shape];
                 if (invoker.mainWindow.selected != null)
                 {
                     invoker.mainWindow.selected.Unselect();

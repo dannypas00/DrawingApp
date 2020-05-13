@@ -68,18 +68,22 @@ namespace DrawingApp
         {
             //Undo top action on actionsDone stack
             //Push undone action to actionsUndone stack
-            Command cmd = actionsDone.Pop();
-            cmd.Undo();
-            actionsUndone.Push(cmd);
+            if (actionsDone.TryPop(out Command cmd))
+            {
+                cmd.Undo();
+                actionsUndone.Push(cmd);
+            }            
         }
 
         public void Redo()
         {
             //Redo top action on actionsUndone stack
             //Push redone action to actionsDone stack
-            Command cmd = actionsUndone.Pop();
-            cmd.Redo();
-            actionsDone.Push(cmd);
+            //Command cmd;
+            if (actionsUndone.TryPop(out Command cmd)) {
+                cmd.Redo();
+                actionsDone.Push(cmd);
+            }
         }
 
         public void Save()
