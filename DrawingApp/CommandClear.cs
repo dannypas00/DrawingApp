@@ -11,7 +11,7 @@ namespace DrawingApp
     class CommandClear : Command
     {
         private CommandInvoker invoker;
-        private UIElementCollection removed;
+        private Dictionary<Shape, CanvasShape> removed;
 
         public CommandClear(CommandInvoker invoker)
         {
@@ -20,7 +20,7 @@ namespace DrawingApp
 
         public void Execute()
         {
-            removed = invoker.mainWindow.canvas.Children;
+            removed = invoker.map;
             for (int i = invoker.mainWindow.canvas.Children.Count - 1; i > -1; i--)
             {
                 invoker.map.Remove((Shape)invoker.mainWindow.canvas.Children[i]);
@@ -35,11 +35,7 @@ namespace DrawingApp
 
         public void Undo()
         {
-            foreach (Shape shape in removed)
-            {
-                CommandDraw cmd = new CommandDraw(Canvas.GetLeft(shape), Canvas.GetTop(shape), shape, invoker);
-                //invoker.mainWindow.canvas.Children.Add(element);
-            }
+            return;
         }
     }
 }
