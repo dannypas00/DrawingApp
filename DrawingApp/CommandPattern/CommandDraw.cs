@@ -23,8 +23,9 @@ namespace DrawingApp.CommandPattern
             this.y1 = y1;
             this.invoker = invoker;
             this.shape = shape;
-            
-            canvShape = new CanvasShape(shape);
+
+            Group selected = invoker.mainWindow.groups.SelectedItem != null ? (Group)invoker.groupMap[invoker.mainWindow.groups.SelectedItem] : (Group)invoker.mainWindow.groups.Items[0];
+            canvShape = new CanvasShape(shape, selected);
             invoker.mainWindow.file.AddChild(canvShape);
             invoker.map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
@@ -32,7 +33,6 @@ namespace DrawingApp.CommandPattern
             shape.Stroke = Brushes.Red;
             shape.StrokeThickness = 3;
             invoker.mainWindow.canvas.Children.Add(shape);
-            canvShape.SetParent((Group)invoker.groupMap[invoker.mainWindow.groups.SelectedItem]);
             Trace.WriteLine(invoker.mainWindow.groups.SelectedItem.ToString());
         }
 
@@ -50,7 +50,7 @@ namespace DrawingApp.CommandPattern
 
             this.x2 = x2;
             this.y2 = y2;
-            invoker.UpdateGroups();
+            invoker.UpdateGroups(canvShape);
         }
 
         public void Redo()

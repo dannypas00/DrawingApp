@@ -21,13 +21,16 @@ namespace DrawingApp
             if (parent != null)
             {
                 foreach (IGroupable g in parent.GetChildren()) {
-                    brothers++;
+                    if (g is Group)
+                    {
+                        brothers++;
+                    }
                 }
                 this.name = parent.GetName() + "." + (brothers + 1);
             }
             else
             {
-                this.name = "Group 1";
+                this.name = "1";
             }
             Group previewParent = parent;
             while (previewParent != null)

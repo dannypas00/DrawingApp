@@ -47,6 +47,12 @@ namespace DrawingApp
             }
         }
 
+        public void InitApp()
+        {
+            CommandInitApp cmd = new CommandInitApp();
+            cmd.Execute(this);
+        }
+
         #region Drawing
         public void StartDraw(double x1, double y1, Shape shape)
         {
@@ -108,10 +114,10 @@ namespace DrawingApp
             actionsDone.Push(cmd);
         }
 
-        public void UpdateGroups()
+        public void UpdateGroups(IGroupable item)
         {
             CommandUpdateGroups cmd = new CommandUpdateGroups();
-            cmd.Execute(this);
+            cmd.Execute(this, item);
         }
 
         public void AddGroup()

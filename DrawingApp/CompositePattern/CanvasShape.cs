@@ -17,12 +17,13 @@ namespace DrawingApp
         private int depth = 1;
         private ListBoxItem groupItem;
 
-        public CanvasShape(Shape shape)
+        public CanvasShape(Shape shape, Group parent)
         {
             this.shape = shape;
+            this.parent = parent;
             if (shape is System.Windows.Shapes.Rectangle)
             {
-                name = "rectangle";
+                name = parent.GetGroupItem().Content.ToString().Split(' ')[0] + " rectangle";
             }
             else if (shape is Ellipse)
             {

@@ -31,8 +31,8 @@ namespace DrawingApp
 
         public MainWindow()
         {
-            invoker = new CommandInvoker(this);
             file = new Group();
+            invoker = new CommandInvoker(this);
         }
 
         public void SetCanvasOffset(Point offset, Shape shape)
@@ -46,7 +46,7 @@ namespace DrawingApp
         {
             if (!hasUpdatedGroups)
             {
-                invoker.UpdateGroups();
+                invoker.InitApp();
                 hasUpdatedGroups = true;
             }
             mouseButtonHeld = true;
