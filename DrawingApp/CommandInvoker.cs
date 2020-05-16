@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DrawingApp.CommandPattern;
 
 namespace DrawingApp
 {
@@ -16,10 +17,34 @@ namespace DrawingApp
         private Stack<Command> actionsDone = new Stack<Command>(), actionsUndone = new Stack<Command>();
         public MainWindow mainWindow;
         public Dictionary<Shape, CanvasShape> map = new Dictionary<Shape, CanvasShape>();
+        public Dictionary<object, IGroupable> groupMap = new Dictionary<object, IGroupable>();
 
         public CommandInvoker(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
+        }
+
+        public void Undo()
+        {
+            //Undo top action on actionsDone stack
+            //Push undone action to actionsUndone stack
+            if (actionsDone.TryPop(out Command cmd))
+            {
+                cmd.Undo();
+                actionsUndone.Push(cmd);
+            }
+        }
+
+        public void Redo()
+        {
+            //Redo top action on actionsUndone stack
+            //Push redone action to actionsDone stack
+            //Command cmd;
+            if (actionsUndone.TryPop(out Command cmd))
+            {
+                cmd.Redo();
+                actionsDone.Push(cmd);
+            }
         }
 
         #region Drawing
@@ -64,28 +89,6 @@ namespace DrawingApp
             actionsDone.Push(cmd);
         }
 
-        public void Undo()
-        {
-            //Undo top action on actionsDone stack
-            //Push undone action to actionsUndone stack
-            if (actionsDone.TryPop(out Command cmd))
-            {
-                cmd.Undo();
-                actionsUndone.Push(cmd);
-            }            
-        }
-
-        public void Redo()
-        {
-            //Redo top action on actionsUndone stack
-            //Push redone action to actionsDone stack
-            //Command cmd;
-            if (actionsUndone.TryPop(out Command cmd)) {
-                cmd.Redo();
-                actionsDone.Push(cmd);
-            }
-        }
-
         public void Save()
         {
             CommandSave cmd = new CommandSave();
@@ -108,7 +111,17 @@ namespace DrawingApp
         public void UpdateGroups()
         {
             CommandUpdateGroups cmd = new CommandUpdateGroups();
-            cmd.Execute(mainWindow);
+            cmd.Execute(this);
+        }
+
+        public void AddGroup()
+        {
+            if (mainWindow.groups.SelectedItem != null)
+            {
+                CommandAddGroup cmd = new CommandAddGroup();
+                cmd.Execute((Group)groupMap[mainWindow.groups.SelectedItem], this);
+                actionsDone.Push(cmd);
+            }
         }
     }
 }

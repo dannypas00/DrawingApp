@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Windows.Controls;
 using System.Windows.Shapes;
 
 namespace DrawingApp
@@ -13,7 +14,8 @@ namespace DrawingApp
         private Shape shape;
         private Group parent;
         private string name = "";
-        private int depth = 0;
+        private int depth = 1;
+        private ListBoxItem groupItem;
 
         public CanvasShape(Shape shape)
         {
@@ -55,6 +57,21 @@ namespace DrawingApp
         public Group GetParent()
         {
             return parent;
+        }
+
+        public void SetParent(Group parent)
+        {
+            this.parent = parent;
+        }
+
+        public ListBoxItem GetGroupItem()
+        {
+            return groupItem;
+        }
+
+        public void SetGroupItem(ListBoxItem groupItem)
+        {
+            this.groupItem = groupItem;
         }
 
         public string GetName()

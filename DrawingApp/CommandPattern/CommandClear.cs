@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 
-namespace DrawingApp
+namespace DrawingApp.CommandPattern
 {
     class CommandClear : Command
     {

@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace DrawingApp
+namespace DrawingApp.CommandPattern
 {
     class CommandDraw : Command
     {
@@ -32,6 +32,7 @@ namespace DrawingApp
             shape.Stroke = Brushes.Red;
             shape.StrokeThickness = 3;
             invoker.mainWindow.canvas.Children.Add(shape);
+            canvShape.SetParent((Group)invoker.groupMap[invoker.mainWindow.groups.SelectedItem]);
             Trace.WriteLine(invoker.mainWindow.groups.SelectedItem.ToString());
         }
 
@@ -49,6 +50,7 @@ namespace DrawingApp
 
             this.x2 = x2;
             this.y2 = y2;
+            invoker.UpdateGroups();
         }
 
         public void Redo()

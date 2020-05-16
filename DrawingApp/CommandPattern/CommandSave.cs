@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
-namespace DrawingApp
+namespace DrawingApp.CommandPattern
 {
     class CommandSave : Command
     {

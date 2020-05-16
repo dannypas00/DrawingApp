@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Shapes;
 
-namespace DrawingApp
+namespace DrawingApp.CommandPattern
 {
     class CommandLoad : Command
     {

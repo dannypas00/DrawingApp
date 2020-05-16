@@ -150,7 +150,7 @@ namespace DrawingApp
 
         private void AddGroup_Click(object sender, RoutedEventArgs e)
         {
-            invoker.UpdateGroups();
+            invoker.AddGroup();
         }
         #endregion
     }

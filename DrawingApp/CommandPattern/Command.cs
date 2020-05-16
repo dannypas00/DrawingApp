@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DrawingApp
+namespace DrawingApp.CommandPattern
 {
     interface Command
     {
