@@ -13,7 +13,7 @@ namespace DrawingApp.CommandPattern
     //Refactor to just adding item to existing group, no need to update all groups every time
     class CommandUpdateGroups : Command
     {
-        public void Execute(CommandInvoker invoker, IGroupable groupableItem)
+        public void Execute(CommandInvoker invoker)
         {
             Group group = invoker.mainWindow.file;
             if (false && invoker.mainWindow.groups.Items[0] == null)

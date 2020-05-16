@@ -10,27 +10,39 @@ namespace DrawingApp.CommandPattern
 {
     class CommandSave : Command
     {
-        public CommandSave()
+        public void Execute(Dictionary<Shape, CanvasShape> map, Dictionary<ListBoxItem, IGroupable> groupMap)
         {
-            //In een lijn van de array moet het volgende staan: shape left top width height
-            //Shape wordt tijdelijk opgeslagen tijdens het runnen, dus shape opvragen
-            
-        }
-
-        public void Execute(Dictionary<Shape, CanvasShape> map)
-        {
-
-            Shape[] shapes = map.Keys.ToArray();
+            IGroupable[] shapes = groupMap.Values.ToArray();
             List<string> lines = new List<string>();
-            foreach (Shape shape in shapes)
+            foreach (IGroupable item in shapes)
             {
-                double x = Canvas.GetLeft(shape);
-                double y = Canvas.GetTop(shape);
-                double h = shape.Width;
-                double w = shape.Height;
-                string type = shape is Rectangle ? "rectangle" : "ellipse";
+                string postLine = "";
+                string type = "";
+                string indent = "";
+                if (item is CanvasShape)
+                {
+                    CanvasShape shape = (CanvasShape)item;
+                    double x = Canvas.GetLeft(shape.GetShape());
+                    double y = Canvas.GetTop(shape.GetShape());
+                    double h = shape.GetShape().Width;
+                    double w = shape.GetShape().Height;
+                    postLine = " " + x + " " + y + " " + h + " " + w;
+                    if (shape.GetShape() is Rectangle || shape.GetShape() is Ellipse)
+                    {
+                        type = item.GetName().Split(' ')[1];
+                    }
+                }
+                //string type = item is Rectangle ? "rectangle" : "ellipse";
+                if (item is Group)
+                {
+                    type = "group " + item.GetName();
+                }
+                for (int i = 0; i < item.GetDepth(); i++)
+                {
+                    indent += "    ";
+                }
 
-                string line = type + " " + x + " " + y + " " + h + " " + w;
+                string line = indent + type + postLine;
                 lines.Add(line);
                 Trace.WriteLine(line);
                 //Save naar @"%userprofile%\Pictures\DrawingApp\save.txt

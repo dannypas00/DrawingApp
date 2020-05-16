@@ -27,7 +27,7 @@ namespace DrawingApp
             }
             else if (shape is Ellipse)
             {
-                name = "ellipse";
+                name = parent.GetGroupItem().Content.ToString().Split(' ')[0] + " ellipse";
             }
             Group previewParent = parent;
             while (previewParent != null)

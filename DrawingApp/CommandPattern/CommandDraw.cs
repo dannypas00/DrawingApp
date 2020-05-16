@@ -24,7 +24,7 @@ namespace DrawingApp.CommandPattern
             this.invoker = invoker;
             this.shape = shape;
 
-            Group selected = invoker.mainWindow.groups.SelectedItem != null ? (Group)invoker.groupMap[invoker.mainWindow.groups.SelectedItem] : (Group)invoker.mainWindow.groups.Items[0];
+            Group selected = invoker.mainWindow.groups.SelectedItem != null ? (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem] : (Group)invoker.mainWindow.groups.Items[0];
             canvShape = new CanvasShape(shape, selected);
             invoker.mainWindow.file.AddChild(canvShape);
             invoker.map.Add(shape, canvShape);
@@ -50,7 +50,7 @@ namespace DrawingApp.CommandPattern
 
             this.x2 = x2;
             this.y2 = y2;
-            invoker.UpdateGroups(canvShape);
+            invoker.UpdateGroups();
         }
 
         public void Redo()

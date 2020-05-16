@@ -17,7 +17,7 @@ namespace DrawingApp
         private Stack<Command> actionsDone = new Stack<Command>(), actionsUndone = new Stack<Command>();
         public MainWindow mainWindow;
         public Dictionary<Shape, CanvasShape> map = new Dictionary<Shape, CanvasShape>();
-        public Dictionary<object, IGroupable> groupMap = new Dictionary<object, IGroupable>();
+        public Dictionary<ListBoxItem, IGroupable> groupMap = new Dictionary<ListBoxItem, IGroupable>();
 
         public CommandInvoker(MainWindow mainWindow)
         {
@@ -98,7 +98,7 @@ namespace DrawingApp
         public void Save()
         {
             CommandSave cmd = new CommandSave();
-            cmd.Execute(map);
+            cmd.Execute(map, groupMap);
         }
 
         public void Load()
@@ -114,10 +114,10 @@ namespace DrawingApp
             actionsDone.Push(cmd);
         }
 
-        public void UpdateGroups(IGroupable item)
+        public void UpdateGroups()
         {
             CommandUpdateGroups cmd = new CommandUpdateGroups();
-            cmd.Execute(this, item);
+            cmd.Execute(this);
         }
 
         public void AddGroup()
@@ -125,7 +125,7 @@ namespace DrawingApp
             if (mainWindow.groups.SelectedItem != null)
             {
                 CommandAddGroup cmd = new CommandAddGroup();
-                cmd.Execute((Group)groupMap[mainWindow.groups.SelectedItem], this);
+                cmd.Execute((Group)groupMap[(ListBoxItem)mainWindow.groups.SelectedItem], this);
                 actionsDone.Push(cmd);
             }
         }
