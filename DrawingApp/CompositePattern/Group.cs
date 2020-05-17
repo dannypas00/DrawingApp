@@ -45,6 +45,11 @@ namespace DrawingApp
             children.Add(child);
         }
 
+        public List<IGroupable> GetChildren()
+        {
+            return children;
+        }
+
         public void RemoveChild(IGroupable child)
         {
             children.Remove(child);
@@ -53,11 +58,6 @@ namespace DrawingApp
         public void RemoveChildAt(int index)
         {
             children.RemoveAt(index);
-        }
-
-        public List<IGroupable> GetChildren()
-        {
-            return children;
         }
 
         public Group GetParent()

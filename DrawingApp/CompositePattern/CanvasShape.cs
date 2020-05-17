@@ -14,7 +14,7 @@ namespace DrawingApp
         private Shape shape;
         private Group parent;
         private string name = "";
-        private int depth = 1;
+        private int depth = 0;
         private ListBoxItem groupItem;
 
         public CanvasShape(Shape shape, Group parent)

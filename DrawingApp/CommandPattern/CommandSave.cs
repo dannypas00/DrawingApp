@@ -35,7 +35,16 @@ namespace DrawingApp.CommandPattern
                 //string type = item is Rectangle ? "rectangle" : "ellipse";
                 if (item is Group)
                 {
-                    type = "group " + item.GetName();
+                    Group tempItem = (Group)item;
+                    int tempCount = 0;
+                    foreach (IGroupable tempChild in tempItem.GetChildren())
+                    {
+                        if (tempChild is CanvasShape)
+                        {
+                            tempCount++;
+                        }
+                    }
+                    type = "group " + tempCount;
                 }
                 for (int i = 0; i < item.GetDepth(); i++)
                 {

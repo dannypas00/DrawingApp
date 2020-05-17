@@ -26,7 +26,8 @@ namespace DrawingApp.CommandPattern
 
             Group selected = invoker.mainWindow.groups.SelectedItem != null ? (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem] : (Group)invoker.mainWindow.groups.Items[0];
             canvShape = new CanvasShape(shape, selected);
-            invoker.mainWindow.file.AddChild(canvShape);
+            Group parent = (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem];
+            parent.AddChild(canvShape);
             invoker.map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
             shape.Fill = Brushes.Red;
