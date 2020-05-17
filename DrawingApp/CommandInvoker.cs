@@ -56,15 +56,22 @@ namespace DrawingApp
         #region Drawing
         public void StartDraw(double x1, double y1, Shape shape)
         {
-            Command cmd = new CommandDraw(x1, y1, shape, this);
+            //Rounding positions to int to comply with mandatory saving grammar
+            Command cmd = new CommandDraw((int)Math.Round(x1), (int)Math.Round(y1), shape, this);
             actionsDone.Push(cmd);
         }
 
         public void Draw(double x2, double y2)
         {
+            //Rounding positions to int to comply with mandatory saving grammar
             CommandDraw cmd = (CommandDraw)actionsDone.Pop();
-            cmd.Execute(x2, y2);
+            cmd.Execute((int)Math.Round(x2), (int)Math.Round(y2));
             actionsDone.Push(cmd);
+        }
+
+        public void StartDraw(Point p2, Shape shape)
+        {
+            StartDraw(p2.X, p2.Y, shape);
         }
 
         public void Draw(Point p2)

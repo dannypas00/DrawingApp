@@ -60,6 +60,11 @@ namespace DrawingApp
             children.RemoveAt(index);
         }
 
+        public void ClearChildren()
+        {
+            children.Clear();
+        }
+
         public Group GetParent()
         {
             return parent;

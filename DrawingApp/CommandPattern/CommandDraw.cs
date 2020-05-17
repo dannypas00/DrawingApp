@@ -17,7 +17,7 @@ namespace DrawingApp.CommandPattern
         private Shape shape;
         private CanvasShape canvShape;
 
-        public CommandDraw(double x1, double y1, Shape shape, CommandInvoker invoker)
+        public CommandDraw(int x1, int y1, Shape shape, CommandInvoker invoker)
         {
             this.x1 = x1;
             this.y1 = y1;
@@ -39,11 +39,11 @@ namespace DrawingApp.CommandPattern
 
         public void Execute(double x2, double y2)
         {
-            double x = Math.Min(x1, x2);    //Om **Maxime's** bug te voorkomen
-            double y = Math.Min(y1, y2);    //Om **Maxime's** bug te voorkomen
+            int x = (int)Math.Round(Math.Min(x1, x2));    //Om **Maxime's** bug te voorkomen
+            int y = (int)Math.Round(Math.Min(y1, y2));    //Om **Maxime's** bug te voorkomen
 
-            double w = Math.Max(x1, x2) - x;//Om **Maxime's** bug te voorkomen
-            double h = Math.Max(y1, y2) - y;//Om **Maxime's** bug te voorkomen
+            int w = (int)Math.Round(Math.Max(x1, x2) - x);//Om **Maxime's** bug te voorkomen
+            int h = (int)Math.Round(Math.Max(y1, y2) - y);//Om **Maxime's** bug te voorkomen
 
             invoker.mainWindow.SetCanvasOffset(new Point(x, y), shape);
             shape.Width = w;

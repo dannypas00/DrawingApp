@@ -27,7 +27,7 @@ namespace DrawingApp
         public Group file;
         private bool mouseButtonHeld = false;
         private Point initialPosition;
-        private bool hasUpdatedGroups = false;
+        public bool hasUpdatedGroups = false;
 
         public MainWindow()
         {
