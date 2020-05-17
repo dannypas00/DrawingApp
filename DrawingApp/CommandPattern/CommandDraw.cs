@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace DrawingApp
+namespace DrawingApp.CommandPattern
 {
     class CommandDraw : Command
     {
@@ -16,29 +17,33 @@ namespace DrawingApp
         private Shape shape;
         private CanvasShape canvShape;
 
-        public CommandDraw(double x1, double y1, Shape shape, CommandInvoker invoker)
+        public CommandDraw(int x1, int y1, Shape shape, CommandInvoker invoker)
         {
             this.x1 = x1;
             this.y1 = y1;
             this.invoker = invoker;
             this.shape = shape;
-            
-            canvShape = new CanvasShape(shape);
+
+            Group selected = invoker.mainWindow.groups.SelectedItem != null ? (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem] : (Group)invoker.mainWindow.groups.Items[0];
+            canvShape = new CanvasShape(shape, selected);
+            Group parent = (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem];
+            parent.AddChild(canvShape);
             invoker.map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
             shape.Fill = Brushes.Red;
             shape.Stroke = Brushes.Red;
             shape.StrokeThickness = 3;
             invoker.mainWindow.canvas.Children.Add(shape);
+            Trace.WriteLine(invoker.mainWindow.groups.SelectedItem.ToString());
         }
 
         public void Execute(double x2, double y2)
         {
-            double x = Math.Min(x1, x2);    //Om **Maxime's** bug te voorkomen
-            double y = Math.Min(y1, y2);    //Om **Maxime's** bug te voorkomen
+            int x = (int)Math.Round(Math.Min(x1, x2));    //Om **Maxime's** bug te voorkomen
+            int y = (int)Math.Round(Math.Min(y1, y2));    //Om **Maxime's** bug te voorkomen
 
-            double w = Math.Max(x1, x2) - x;//Om **Maxime's** bug te voorkomen
-            double h = Math.Max(y1, y2) - y;//Om **Maxime's** bug te voorkomen
+            int w = (int)Math.Round(Math.Max(x1, x2) - x);//Om **Maxime's** bug te voorkomen
+            int h = (int)Math.Round(Math.Max(y1, y2) - y);//Om **Maxime's** bug te voorkomen
 
             invoker.mainWindow.SetCanvasOffset(new Point(x, y), shape);
             shape.Width = w;
@@ -46,6 +51,7 @@ namespace DrawingApp
 
             this.x2 = x2;
             this.y2 = y2;
+            invoker.UpdateGroups();
         }
 
         public void Redo()
