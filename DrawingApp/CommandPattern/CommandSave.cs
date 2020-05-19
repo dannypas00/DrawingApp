@@ -44,7 +44,8 @@ namespace DrawingApp.CommandPattern
                             tempCount++;
                         }
                     }
-                    type = "group " + tempCount;
+                    type = "group";
+                    postLine = " " + tempCount;
                 }
                 for (int i = 0; i < item.GetDepth(); i++)
                 {
@@ -53,11 +54,9 @@ namespace DrawingApp.CommandPattern
 
                 string line = indent + type + postLine;
                 lines.Add(line);
-                Trace.WriteLine(line);
-                //Save naar @"%userprofile%\Pictures\DrawingApp\save.txt
             }
-            var pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
-            var filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
+            string pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
+            string filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
             System.IO.File.WriteAllLines(filePath, lines);
         }
 

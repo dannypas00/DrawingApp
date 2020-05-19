@@ -19,10 +19,8 @@ namespace DrawingApp.CommandPattern
         public void Execute(CommandInvoker invoker)
         {
             invoker.Clear();
-            //string line;
-            var pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
-            var filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
-            //System.IO.StreamReader file = new System.IO.StreamReader(filePath);
+            string pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
+            string filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
             invoker.mainWindow.groups.Items.Clear();
             invoker.mainWindow.file.ClearChildren();
             invoker.groupMap.Clear();
@@ -120,7 +118,6 @@ namespace DrawingApp.CommandPattern
                 }
                 linenr++;
             }
-            //file.Close();
             invoker.UpdateGroups();
         }
 

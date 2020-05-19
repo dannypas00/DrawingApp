@@ -8,8 +8,6 @@ namespace DrawingApp.CommandPattern
 {
     class CommandInitApp
     {
-        CommandInvoker invoker;
-
         public void Execute(CommandInvoker invoker)
         {
             Group group = invoker.mainWindow.file;
