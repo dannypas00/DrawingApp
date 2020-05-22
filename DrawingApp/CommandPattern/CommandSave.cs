@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {

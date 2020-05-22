@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
-namespace DrawingApp
+namespace DrawingApp.CompositePattern
 {
     public interface IGroupable
     {

@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 
-namespace DrawingApp
+namespace DrawingApp.CompositePattern
 {
     public class Group : IGroupable
     {
-        private List<IGroupable> children = new List<IGroupable>();
+        private readonly List<IGroupable> children = new List<IGroupable>();
         private Group parent;
-        private string name = "";
-        private int brothers = 0;
-        private int depth = 0;
+        private readonly string name = "";
+        private readonly int brothers = 0;
+        private readonly int depth = 0;
         private ListBoxItem groupItem;
 
         public Group(Group parent = null)
@@ -20,12 +18,7 @@ namespace DrawingApp
             this.parent = parent;
             if (parent != null)
             {
-                foreach (IGroupable g in parent.GetChildren()) {
-                    if (g is Group)
-                    {
-                        brothers++;
-                    }
-                }
+                brothers = parent.GetChildren().OfType<Group>().Count();
                 this.name = parent.GetName() + "." + (brothers + 1);
             }
             else

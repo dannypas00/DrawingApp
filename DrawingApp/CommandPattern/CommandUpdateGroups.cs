@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {

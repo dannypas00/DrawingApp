@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+﻿using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
-namespace DrawingApp
+namespace DrawingApp.CompositePattern
 {
     public class CanvasShape : IGroupable
     {
+        #pragma warning disable 414
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members", Justification = "Might be used later on, will remove if unneeded before production")]
         private bool selected = false;
-        private Point position1 = new Point(), position2 = new Point();
-        private Shape shape;
+        #pragma warning restore 414
+        private readonly Shape shape;
         private Group parent;
-        private string name = "";
-        private int depth = 0;
+        private readonly string name = "";
+        private readonly int depth = 0;
         private ListBoxItem groupItem;
 
         public CanvasShape(Shape shape, Group parent)
@@ -23,11 +22,11 @@ namespace DrawingApp
             this.parent = parent;
             if (shape is System.Windows.Shapes.Rectangle)
             {
-                name = parent.GetGroupItem().Content.ToString().Split(' ')[0] + " rectangle";
+                name = parent.GetGroupItem().Content.ToString()?.Split(' ')[0] + " rectangle";
             }
             else if (shape is Ellipse)
             {
-                name = parent.GetGroupItem().Content.ToString().Split(' ')[0] + " ellipse";
+                name = parent.GetGroupItem().Content.ToString()?.Split(' ')[0] + " ellipse";
             }
             Group previewParent = parent;
             while (previewParent != null)

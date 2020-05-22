@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using DrawingApp.CommandPattern;
+using DrawingApp.CompositePattern;
 
 namespace DrawingApp
 {
@@ -15,6 +17,7 @@ namespace DrawingApp
         public Dictionary<ListBoxItem, IGroupable> GroupMap = new Dictionary<ListBoxItem, IGroupable>();
         public MainWindow MainWindow;
         public Dictionary<Shape, CanvasShape> Map = new Dictionary<Shape, CanvasShape>();
+        public static readonly Random Rnd = new Random();
 
         public CommandInvoker(MainWindow mainWindow)
         {
@@ -177,5 +180,11 @@ namespace DrawingApp
             actionsDone.Push(cmd);
         }
         #endregion
+
+        public static SolidColorBrush RandomColor()
+        {
+            var hex = $"#{Rnd.Next(0x1000000):X6}";
+            return (SolidColorBrush)(new BrushConverter().ConvertFrom(hex));
+        }
     }
 }

@@ -6,12 +6,13 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandLoad : Command
+    internal class CommandLoad : Command
     {
-        private CommandInvoker invoker;
+        private readonly CommandInvoker invoker;
 
         public CommandLoad(CommandInvoker invoker)
         {
@@ -114,7 +115,7 @@ namespace DrawingApp.CommandPattern
                                 throw new InvalidDataException();
                         }
                         throw new NotImplementedException();
-                        break;
+                        //break;
                     default:
                         continue;
                 }

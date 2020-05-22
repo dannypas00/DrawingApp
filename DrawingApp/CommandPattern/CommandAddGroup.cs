@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
+using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandAddGroup : Command
+    internal class CommandAddGroup : Command
     {
         public Group Parent, Child;
         public CommandInvoker Invoker;

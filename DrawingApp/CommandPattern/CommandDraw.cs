@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
@@ -32,7 +33,7 @@ namespace DrawingApp.CommandPattern
             parent.AddChild(canvShape);
             invoker.Map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
-            shape.Stroke = shape.Fill = RandomColor();
+            shape.Stroke = shape.Fill = CommandInvoker.RandomColor();
             shape.StrokeThickness = 3;
             invoker.MainWindow.canvas.Children.Add(shape);
             Trace.WriteLine(invoker.MainWindow.groups.SelectedItem.ToString());
@@ -85,12 +86,6 @@ namespace DrawingApp.CommandPattern
                     parent.Select();
                 }
             }
-        }
-
-        private static SolidColorBrush RandomColor()
-        {
-            var hex = $"#{_rnd.Next(0x1000000):X6}";
-            return (SolidColorBrush)(new BrushConverter().ConvertFrom(hex));
         }
     }
 }

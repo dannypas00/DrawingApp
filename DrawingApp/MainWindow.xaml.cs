@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using DrawingApp.CompositePattern;
 
 namespace DrawingApp
 {
@@ -31,6 +34,12 @@ namespace DrawingApp
             {
                 invoker.InitApp();
                 HasUpdatedGroups = true;
+            }
+
+            foreach (Button b in new List<Button>() { ClearButton, EllipseButton, SaveButton, AddGroup, RectangleButton, LoadButton, UndoButton, RedoButton, ClearButton })
+            {
+                if (b != null)
+                    b.Background = CommandInvoker.RandomColor();
             }
 
             mouseButtonHeld = true;
