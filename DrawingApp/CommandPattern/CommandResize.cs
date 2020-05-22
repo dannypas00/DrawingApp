@@ -5,38 +5,42 @@ using System.Windows.Input;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandResize : Command
+    internal class CommandResize : Command
     {
-        private double multiplier = 0.005;
+        private const double Multiplier = 0.005;
+        private readonly CanvasShape shape;
+        private int wheelDelta;
 
-        public CommandResize()
+        public CommandResize(CanvasShape shape, MouseWheelEventArgs currMouseWheelEventArgs)
         {
-
+            this.shape = shape;
+            this.wheelDelta = -currMouseWheelEventArgs.Delta;
         }
 
-        public void Execute(CanvasShape shape, MouseWheelEventArgs e)
+        public void Execute()
         {
-            double factor = -e.Delta;
+            double factor = wheelDelta;
             if (Math.Sign(factor) != -1)
             {
-                shape.GetShape().Width *= factor * multiplier; // * multiplier;
-                shape.GetShape().Height *= factor * multiplier; // * multiplier;
+                shape.GetShape().Width *= factor * Multiplier; // * multiplier;
+                shape.GetShape().Height *= factor * Multiplier; // * multiplier;
             }
             else
             {
-                shape.GetShape().Width /= Math.Abs(factor) * multiplier; // * multiplier;
-                shape.GetShape().Height /= Math.Abs(factor) * multiplier; // * multiplier;
+                shape.GetShape().Width /= Math.Abs(factor) * Multiplier; // * multiplier;
+                shape.GetShape().Height /= Math.Abs(factor) * Multiplier; // * multiplier;
             }
         }
 
         public void Redo()
         {
-            throw new NotImplementedException();
+            Undo();
         }
 
         public void Undo()
         {
-            throw new NotImplementedException();
+            wheelDelta *= -1;
+            Execute();
         }
     }
 }

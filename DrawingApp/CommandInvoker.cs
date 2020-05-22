@@ -45,27 +45,27 @@ namespace DrawingApp
 
         public void InitApp()
         {
-            var cmd = new CommandInitApp();
-            cmd.Execute(this);
+            var cmd = new CommandInitApp(this);
+            cmd.Execute();
         }
 
         public void Resize(CanvasShape shape, MouseWheelEventArgs e)
         {
-            var cmd = new CommandResize();
-            cmd.Execute(shape, e);
+            var cmd = new CommandResize(shape, e);
+            cmd.Execute();
             actionsDone.Push(cmd);
         }
 
         public void Save()
         {
-            var cmd = new CommandSave();
-            cmd.Execute(Map, GroupMap);
+            var cmd = new CommandSave(this);
+            cmd.Execute();
         }
 
         public void Load()
         {
-            var cmd = new CommandLoad();
-            cmd.Execute(this);
+            var cmd = new CommandLoad(this);
+            cmd.Execute();
         }
 
         public void Clear()
@@ -77,16 +77,16 @@ namespace DrawingApp
 
         public void UpdateGroups()
         {
-            var cmd = new CommandUpdateGroups();
-            cmd.Execute(this);
+            Command cmd = new CommandUpdateGroups(this);
+            cmd.Execute();
         }
 
         public void AddGroup()
         {
             if (MainWindow.groups.SelectedItem != null)
             {
-                var cmd = new CommandAddGroup();
-                cmd.Execute((Group) GroupMap[(ListBoxItem) MainWindow.groups.SelectedItem], this);
+                var cmd = new CommandAddGroup((Group) GroupMap[(ListBoxItem) MainWindow.groups.SelectedItem], this);
+                cmd.Execute();
                 actionsDone.Push(cmd);
             }
         }
@@ -119,7 +119,9 @@ namespace DrawingApp
         {
             //Rounding positions to int to comply with mandatory saving grammar
             var cmd = (CommandDraw) actionsDone.Pop();
-            cmd.Execute((int) Math.Round(x2), (int) Math.Round(y2));
+            cmd.X2 = (int) Math.Round(x2);
+            cmd.Y2 = (int) Math.Round(y2);
+            cmd.Execute();
             actionsDone.Push(cmd);
         }
 
@@ -170,7 +172,8 @@ namespace DrawingApp
         public void Move(MouseEventArgs e)
         {
             var cmd = (CommandMove) actionsDone.Pop();
-            cmd.Execute(e);
+            cmd.CurrMouseEventArgs = e;
+            cmd.Execute();
             actionsDone.Push(cmd);
         }
         #endregion

@@ -12,10 +12,12 @@ namespace DrawingApp.CommandPattern
 {
     class CommandDraw : Command
     {
-        private double x1, y1, x2, y2;
-        private CommandInvoker invoker;
-        private Shape shape;
-        private CanvasShape canvShape;
+        private readonly int x1, y1;
+        public int X2, Y2;
+        private readonly CommandInvoker invoker;
+        private readonly Shape shape;
+        private readonly CanvasShape canvShape;
+        private static Random _rnd = new Random();
 
         public CommandDraw(int x1, int y1, Shape shape, CommandInvoker invoker)
         {
@@ -30,27 +32,24 @@ namespace DrawingApp.CommandPattern
             parent.AddChild(canvShape);
             invoker.Map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
-            shape.Fill = Brushes.Red;
-            shape.Stroke = Brushes.Red;
+            shape.Stroke = shape.Fill = RandomColor();
             shape.StrokeThickness = 3;
             invoker.MainWindow.canvas.Children.Add(shape);
             Trace.WriteLine(invoker.MainWindow.groups.SelectedItem.ToString());
         }
 
-        public void Execute(double x2, double y2)
+        public void Execute()
         {
-            int x = (int)Math.Round(Math.Min(x1, x2));    //Om **Maxime's** bug te voorkomen
-            int y = (int)Math.Round(Math.Min(y1, y2));    //Om **Maxime's** bug te voorkomen
+            int x = (int)Math.Min(x1, X2);    //Om **Maxime's** bug te voorkomen
+            int y = (int)Math.Min(y1, Y2);    //Om **Maxime's** bug te voorkomen
 
-            int w = (int)Math.Round(Math.Max(x1, x2) - x);//Om **Maxime's** bug te voorkomen
-            int h = (int)Math.Round(Math.Max(y1, y2) - y);//Om **Maxime's** bug te voorkomen
+            int w = (int)Math.Max(x1, X2) - x;//Om **Maxime's** bug te voorkomen
+            int h = (int)Math.Max(y1, Y2) - y;//Om **Maxime's** bug te voorkomen
 
             invoker.MainWindow.SetCanvasOffset(new Point(x, y), shape);
             shape.Width = w;
             shape.Height = h;
 
-            this.x2 = x2;
-            this.y2 = y2;
             invoker.UpdateGroups();
         }
 
@@ -58,12 +57,14 @@ namespace DrawingApp.CommandPattern
         {
             invoker.Map.Add(shape, canvShape);
             invoker.MainWindow.canvas.Children.Add(shape);
+            //BUG: listbox of groups doesn't update properly when redoing a draw
         }
 
         public void Undo()
         {
             invoker.Map.Remove(shape);
             invoker.MainWindow.canvas.Children.Remove(shape);
+            //BUG: listbox of groups doesn't update properly when undoing a draw
         }
 
         private void Select(object sender, MouseButtonEventArgs e)
@@ -84,6 +85,12 @@ namespace DrawingApp.CommandPattern
                     parent.Select();
                 }
             }
+        }
+
+        private static SolidColorBrush RandomColor()
+        {
+            var hex = $"#{_rnd.Next(0x1000000):X6}";
+            return (SolidColorBrush)(new BrushConverter().ConvertFrom(hex));
         }
     }
 }

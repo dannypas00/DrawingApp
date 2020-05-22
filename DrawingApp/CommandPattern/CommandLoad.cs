@@ -11,7 +11,14 @@ namespace DrawingApp.CommandPattern
 {
     class CommandLoad : Command
     {
-        public void Execute(CommandInvoker invoker)
+        private CommandInvoker invoker;
+
+        public CommandLoad(CommandInvoker invoker)
+        {
+            this.invoker = invoker;
+        }
+
+        public void Execute()
         {
             invoker.Clear();
             string pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";

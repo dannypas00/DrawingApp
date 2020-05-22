@@ -10,18 +10,24 @@ namespace DrawingApp.CommandPattern
 {
     class CommandSave : Command
     {
-        public void Execute(Dictionary<Shape, CanvasShape> map, Dictionary<ListBoxItem, IGroupable> groupMap)
+        private CommandInvoker invoker;
+
+        public CommandSave(CommandInvoker invoker)
         {
-            IGroupable[] shapes = groupMap.Values.ToArray();
+            this.invoker = invoker;
+        }
+
+        public void Execute()
+        {
+            IGroupable[] shapes = invoker.GroupMap.Values.ToArray();
             List<string> lines = new List<string>();
             foreach (IGroupable item in shapes)
             {
                 string postLine = "";
                 string type = "";
                 string indent = "";
-                if (item is CanvasShape)
+                if (item is CanvasShape shape)
                 {
-                    CanvasShape shape = (CanvasShape)item;
                     double x = Canvas.GetLeft(shape.GetShape());
                     double y = Canvas.GetTop(shape.GetShape());
                     double h = shape.GetShape().Width;
@@ -29,13 +35,12 @@ namespace DrawingApp.CommandPattern
                     postLine = " " + x + " " + y + " " + h + " " + w;
                     if (shape.GetShape() is Rectangle || shape.GetShape() is Ellipse)
                     {
-                        type = item.GetName().Split(' ')[1];
+                        type = shape.GetName().Split(' ')[1];
                     }
                 }
                 //string type = item is Rectangle ? "rectangle" : "ellipse";
-                if (item is Group)
+                if (item is Group tempItem)
                 {
-                    Group tempItem = (Group)item;
                     int tempCount = 0;
                     foreach (IGroupable tempChild in tempItem.GetChildren())
                     {

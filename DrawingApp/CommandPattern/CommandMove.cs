@@ -11,9 +11,11 @@ namespace DrawingApp.CommandPattern
     class CommandMove : Command
     {
         private Point origin = new Point(0, 0), offset = new Point(0, 0);
-        private CanvasShape shape;
-        private MainWindow mainWindow;
+        private readonly CanvasShape shape;
+        private readonly MainWindow mainWindow;
         private Point oldPos = new Point(0, 0);
+        public MouseEventArgs CurrMouseEventArgs;
+
         public CommandMove(CanvasShape shape, Point initialPos, MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -24,9 +26,9 @@ namespace DrawingApp.CommandPattern
             offset.Y = initialPos.Y - Canvas.GetTop(shape.GetShape());
         }
 
-        public void Execute(MouseEventArgs e)
+        public void Execute()
         {
-            Point absolutePos = e.GetPosition(mainWindow.canvas);
+            Point absolutePos = CurrMouseEventArgs.GetPosition(mainWindow.canvas);
 
             double x = absolutePos.X - offset.X;
             double y = absolutePos.Y - offset.Y;

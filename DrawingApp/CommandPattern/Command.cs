@@ -8,5 +8,6 @@ namespace DrawingApp.CommandPattern
     {
         public void Undo();
         public void Redo();
+        public void Execute();
     }
 }

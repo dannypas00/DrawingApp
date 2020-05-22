@@ -6,9 +6,16 @@ using System.Windows.Controls;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandInitApp
+    class CommandInitApp : Command
     {
-        public void Execute(CommandInvoker invoker)
+        private readonly CommandInvoker invoker;
+
+        public CommandInitApp(CommandInvoker invoker)
+        {
+            this.invoker = invoker;
+        }
+
+        public void Execute()
         {
             Group group = invoker.MainWindow.GetFile();
             invoker.MainWindow.groups.Items.Clear();
@@ -20,6 +27,16 @@ namespace DrawingApp.CommandPattern
             group.SetGroupItem(groupItem);
             invoker.MainWindow.groups.SelectedItem = groupItem;
             groupItem.IsSelected = true;
+        }
+
+        public void Undo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Redo()
+        {
+            throw new NotImplementedException();
         }
     }
 }

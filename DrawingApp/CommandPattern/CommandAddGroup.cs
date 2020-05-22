@@ -7,31 +7,34 @@ namespace DrawingApp.CommandPattern
 {
     class CommandAddGroup : Command
     {
-        Group parent;
-        Group child;
-        CommandInvoker invoker;
+        public Group Parent, Child;
+        public CommandInvoker Invoker;
 
-        public void Execute(Group parent, CommandInvoker invoker)
+        public CommandAddGroup(Group parent, CommandInvoker invoker)
         {
-            this.parent = parent;
-            this.invoker = invoker;
-            child = new Group(parent);
-            parent.AddChild(child);
-            invoker.UpdateGroups();
-            child.GetGroupItem().IsSelected = true;
-            invoker.MainWindow.groups.SelectedItem = child.GetGroupItem();
+            this.Parent = parent;
+            this.Invoker = invoker;
+        }
+
+        public void Execute()
+        {
+            Child = new Group(Parent);
+            Parent.AddChild(Child);
+            Invoker.UpdateGroups();
+            Child.GetGroupItem().IsSelected = true;
+            Invoker.MainWindow.groups.SelectedItem = Child.GetGroupItem();
         }
 
         public void Redo()
         {
-            parent.AddChild(child);
-            invoker.UpdateGroups();
+            Parent.AddChild(Child);
+            Invoker.UpdateGroups();
         }
 
         public void Undo()
         {
-            parent.RemoveChild(child);
-            invoker.MainWindow.groups.Items.Remove(child.GetGroupItem());
+            Parent.RemoveChild(Child);
+            Invoker.MainWindow.groups.Items.Remove(Child.GetGroupItem());
         }
     }
 }
