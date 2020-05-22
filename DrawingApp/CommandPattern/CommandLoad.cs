@@ -22,13 +22,13 @@ namespace DrawingApp.CommandPattern
             string pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
             string filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
             invoker.mainWindow.groups.Items.Clear();
-            invoker.mainWindow.file.ClearChildren();
+            invoker.mainWindow.File.ClearChildren();
             invoker.groupMap.Clear();
             invoker.map.Clear();
             int linenr = 0;
             Dictionary<int, Group> lineGroupmap = new Dictionary<int, Group>();
             invoker.InitApp();
-            invoker.mainWindow.hasUpdatedGroups = true;
+            invoker.mainWindow.HasUpdatedGroups = true;
             string[] fileLines = File.ReadAllLines(filePath);
             foreach (string line in fileLines)
             {

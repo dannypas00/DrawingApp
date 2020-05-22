@@ -15,7 +15,7 @@ namespace DrawingApp.CommandPattern
     {
         public void Execute(CommandInvoker invoker)
         {
-            Group group = invoker.mainWindow.file;
+            Group group = invoker.mainWindow.File;
             if (false && invoker.mainWindow.groups.Items[0] == null)
             {
                 //Only runs for the root group

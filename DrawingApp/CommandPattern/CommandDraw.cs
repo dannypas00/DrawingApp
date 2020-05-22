@@ -68,18 +68,18 @@ namespace DrawingApp.CommandPattern
 
         private void Select(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Shape && invoker.mainWindow.currentAction == "select")
+            if (sender is Shape && invoker.mainWindow.CurrentAction == "select")
             {
                 Shape shape = (Shape)sender;
                 CanvasShape parent = invoker.map[shape];
-                if (invoker.mainWindow.selected != null)
+                if (invoker.mainWindow.Selected != null)
                 {
-                    invoker.mainWindow.selected.Unselect();
-                    invoker.mainWindow.selected = null;
+                    invoker.mainWindow.Selected.Unselect();
+                    invoker.mainWindow.Selected = null;
                 }
-                if (invoker.mainWindow.selected != parent)
+                if (invoker.mainWindow.Selected != parent)
                 {
-                    invoker.mainWindow.selected = parent;
+                    invoker.mainWindow.Selected = parent;
                     invoker.StartMove(parent, e.GetPosition(invoker.mainWindow.canvas));
                     parent.Select();
                 }

@@ -62,11 +62,11 @@
         </Border>
         <Grid Grid.ColumnSpan="6" Grid.Row="1" x:Name="WorkingField">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="9*" x:Name="CanvasColumnn"/>
+                <ColumnDefinition Width="9*" x:Name="CanvasColumn"/>
                 <ColumnDefinition Width="1*" x:Name="SidebarColumn"/>
             </Grid.ColumnDefinitions>
-            <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" Background="Transparent" Grid.ColumnSpan="5" Grid.Column="0" />
-            <ListBox x:Name="groups" Background="Transparent" Grid.Column="1" Margin="0 30 0 0">
+            <Canvas x:Name="canvas" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseWheel="Canvas_MouseWheel" Background="Transparent" Grid.Column="0" />
+            <ListBox x:Name="groups" Background="LightCyan" Grid.Column="1">
             </ListBox>
         </Grid>
     </Grid>

@@ -1,37 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace DrawingApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public CanvasShape selected = null;
-        public string currentAction = "select";
-        private CommandInvoker invoker;
-        public Group file;
-        private bool mouseButtonHeld = false;
+        public string CurrentAction = "select";
+        public Group File;
+        public bool HasUpdatedGroups;
         private Point initialPosition;
-        public bool hasUpdatedGroups = false;
+        private readonly CommandInvoker invoker;
+        private bool mouseButtonHeld;
+        public CanvasShape Selected;
 
         public MainWindow()
         {
-            file = new Group();
+            File = new Group();
             invoker = new CommandInvoker(this);
         }
 
@@ -44,22 +33,21 @@ namespace DrawingApp
         #region Button handling
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!hasUpdatedGroups)
+            if (!HasUpdatedGroups)
             {
                 invoker.InitApp();
-                hasUpdatedGroups = true;
+                HasUpdatedGroups = true;
             }
+
             mouseButtonHeld = true;
             initialPosition = e.GetPosition(canvas);
-            switch (currentAction)
+            switch (CurrentAction)
             {
                 case "rectangle":
                     invoker.StartDraw(initialPosition.X, initialPosition.Y, new Rectangle());
                     break;
                 case "ellipse":
                     invoker.StartDraw(initialPosition.X, initialPosition.Y, new Ellipse());
-                    break;
-                default:
                     break;
             }
         }
@@ -71,21 +59,16 @@ namespace DrawingApp
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mouseButtonHeld == true)
+            if (mouseButtonHeld)
             {
-                switch (currentAction)
+                switch (CurrentAction)
                 {
                     case "ellipse":
                     case "rectangle":
                         invoker.Draw(e.GetPosition(canvas));
                         break;
                     case "select":
-                        if (selected != null)
-                        {
-                            invoker.Move(selected, e, initialPosition);
-                        }
-                        break;
-                    default:
+                        if (Selected != null) invoker.Move(e);
                         break;
                 }
             }
@@ -93,12 +76,11 @@ namespace DrawingApp
 
         private void Canvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (selected != null)
-            {
-                invoker.Resize(selected, e);
-            }
+            if (Selected != null) invoker.Resize(Selected, e);
         }
 
+        #region Toolbar Buttons
+        //All functions in this region are called upon pressing their respective buttons 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             invoker.Save();
@@ -111,8 +93,9 @@ namespace DrawingApp
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
-            currentAction = "select";
+            CurrentAction = "select";
         }
+
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
             invoker.Undo();
@@ -125,12 +108,10 @@ namespace DrawingApp
 
         private void EllipseButton_Click(object sender, RoutedEventArgs e)
         {
-            currentAction = "ellipse";
-            if (selected != null)
-            {
-                selected.Unselect();
-                selected = null;
-            }
+            CurrentAction = "ellipse";
+            if (Selected == null) return;
+            Selected.Unselect();
+            Selected = null;
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -140,18 +121,17 @@ namespace DrawingApp
 
         private void RectangleButton_Click(object sender, RoutedEventArgs e)
         {
-            currentAction = "rectangle";
-            if (selected != null)
-            {
-                selected.Unselect();
-                selected = null;
-            }
+            CurrentAction = "rectangle";
+            if (Selected == null) return;
+            Selected.Unselect();
+            Selected = null;
         }
 
         private void AddGroup_Click(object sender, RoutedEventArgs e)
         {
             invoker.AddGroup();
         }
+        #endregion
         #endregion
     }
 }
