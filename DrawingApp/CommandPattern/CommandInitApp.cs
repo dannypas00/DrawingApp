@@ -10,15 +10,15 @@ namespace DrawingApp.CommandPattern
     {
         public void Execute(CommandInvoker invoker)
         {
-            Group group = invoker.mainWindow.File;
-            invoker.mainWindow.groups.Items.Clear();
+            Group group = invoker.MainWindow.GetFile();
+            invoker.MainWindow.groups.Items.Clear();
             ListBoxItem groupItem = new ListBoxItem();
             groupItem.Content = group.GetName();
             groupItem.IsEnabled = true;
-            invoker.groupMap.Add(groupItem, group);
-            invoker.mainWindow.groups.Items.Add(groupItem);
+            invoker.GroupMap.Add(groupItem, group);
+            invoker.MainWindow.groups.Items.Add(groupItem);
             group.SetGroupItem(groupItem);
-            invoker.mainWindow.groups.SelectedItem = groupItem;
+            invoker.MainWindow.groups.SelectedItem = groupItem;
             groupItem.IsSelected = true;
         }
     }

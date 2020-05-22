@@ -12,13 +12,13 @@ namespace DrawingApp
     {
         private readonly Stack<Command> actionsDone = new Stack<Command>();
         private readonly Stack<Command> actionsUndone = new Stack<Command>();
-        public Dictionary<ListBoxItem, IGroupable> groupMap = new Dictionary<ListBoxItem, IGroupable>();
-        public MainWindow mainWindow;
-        public Dictionary<Shape, CanvasShape> map = new Dictionary<Shape, CanvasShape>();
+        public Dictionary<ListBoxItem, IGroupable> GroupMap = new Dictionary<ListBoxItem, IGroupable>();
+        public MainWindow MainWindow;
+        public Dictionary<Shape, CanvasShape> Map = new Dictionary<Shape, CanvasShape>();
 
         public CommandInvoker(MainWindow mainWindow)
         {
-            this.mainWindow = mainWindow;
+            this.MainWindow = mainWindow;
         }
 
         public void Undo()
@@ -36,7 +36,6 @@ namespace DrawingApp
         {
             //Redo top action on actionsUndone stack
             //Push redone action to actionsDone stack
-            //Command cmd;
             if (actionsUndone.TryPop(out var cmd))
             {
                 cmd.Redo();
@@ -60,7 +59,7 @@ namespace DrawingApp
         public void Save()
         {
             var cmd = new CommandSave();
-            cmd.Execute(map, groupMap);
+            cmd.Execute(Map, GroupMap);
         }
 
         public void Load()
@@ -84,10 +83,10 @@ namespace DrawingApp
 
         public void AddGroup()
         {
-            if (mainWindow.groups.SelectedItem != null)
+            if (MainWindow.groups.SelectedItem != null)
             {
                 var cmd = new CommandAddGroup();
-                cmd.Execute((Group) groupMap[(ListBoxItem) mainWindow.groups.SelectedItem], this);
+                cmd.Execute((Group) GroupMap[(ListBoxItem) MainWindow.groups.SelectedItem], this);
                 actionsDone.Push(cmd);
             }
         }
@@ -111,8 +110,8 @@ namespace DrawingApp
         }
 
         /// <summary>
-        /// Continue the drawing process started by StartDraw,
-        /// it is run every cycle the mouse button is being pressed.
+        /// Continues the drawing process started by StartDraw,
+        /// it is intended to run every cycle the mouse button is being pressed.
         /// </summary>
         /// <param name="x2">The x axis of the drawing's second point</param>
         /// <param name="y2">The y axis of the drawing's second point</param>
@@ -125,9 +124,9 @@ namespace DrawingApp
         }
 
         /// <summary>
-        /// This starts the drawing process,
-        /// it is run once when the mouse button is pressed,
-        /// and has to be finished with the Draw function.
+        /// Starts the drawing process,
+        /// it is intended to run once when the mouse button is pressed,
+        /// and to be finished with the Draw function.
         /// </summary>
         /// <param name="p1">The drawing's first point</param>
         /// <param name="shape">The Shape object to draw with</param>
@@ -137,8 +136,8 @@ namespace DrawingApp
         }
 
         /// <summary>
-        /// Continue the drawing process started by StartDraw,
-        /// it is run every cycle the mouse button is being pressed.
+        /// Continues the drawing process started by StartDraw,
+        /// it is intended to run every cycle the mouse button is being pressed.
         /// </summary>
         /// <param name="p2">The drawing's second point</param>
         public void Draw(Point p2)
@@ -147,25 +146,25 @@ namespace DrawingApp
         }
         #endregion
 
-        #region Move
+        #region Movement
         //This region handles the two movement commands
 
         /// <summary>
-        /// This starts the movement process,
-        /// it is run once when the mouse button is pressed,
-        /// and has to be finished with the Move function.
+        /// Starts the movement process,
+        /// it is intended to run once when the mouse button is pressed,
+        /// and to be finished with the Move function.
         /// </summary>
         /// <param name="shape">The shape to move</param>
         /// <param name="initialPos">The initial position of the mouse moving the shape</param>
         public void StartMove(CanvasShape shape, Point initialPos)
         {
-            Command cmd = new CommandMove(shape, initialPos, mainWindow);
+            Command cmd = new CommandMove(shape, initialPos, MainWindow);
             actionsDone.Push(cmd);
         }
 
         /// <summary>
-        /// Continue the movement process started by StartMove,
-        /// it is run every cycle the mouse button is being pressed.
+        /// Continues the movement process started by StartMove,
+        /// it is intended to run every cycle the mouse button is being pressed.
         /// </summary>
         /// <param name="e">The MouseEventArgs of the mouse moving the shape</param>
         public void Move(MouseEventArgs e)

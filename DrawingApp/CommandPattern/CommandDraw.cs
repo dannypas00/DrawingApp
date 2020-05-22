@@ -24,17 +24,17 @@ namespace DrawingApp.CommandPattern
             this.invoker = invoker;
             this.shape = shape;
 
-            Group selected = invoker.mainWindow.groups.SelectedItem != null ? (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem] : (Group)invoker.mainWindow.groups.Items[0];
+            Group selected = invoker.MainWindow.groups.SelectedItem != null ? (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem] : (Group)invoker.MainWindow.groups.Items[0];
             canvShape = new CanvasShape(shape, selected);
-            Group parent = (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem];
+            Group parent = (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem];
             parent.AddChild(canvShape);
-            invoker.map.Add(shape, canvShape);
+            invoker.Map.Add(shape, canvShape);
             shape.MouseDown += new MouseButtonEventHandler(Select);
             shape.Fill = Brushes.Red;
             shape.Stroke = Brushes.Red;
             shape.StrokeThickness = 3;
-            invoker.mainWindow.canvas.Children.Add(shape);
-            Trace.WriteLine(invoker.mainWindow.groups.SelectedItem.ToString());
+            invoker.MainWindow.canvas.Children.Add(shape);
+            Trace.WriteLine(invoker.MainWindow.groups.SelectedItem.ToString());
         }
 
         public void Execute(double x2, double y2)
@@ -45,7 +45,7 @@ namespace DrawingApp.CommandPattern
             int w = (int)Math.Round(Math.Max(x1, x2) - x);//Om **Maxime's** bug te voorkomen
             int h = (int)Math.Round(Math.Max(y1, y2) - y);//Om **Maxime's** bug te voorkomen
 
-            invoker.mainWindow.SetCanvasOffset(new Point(x, y), shape);
+            invoker.MainWindow.SetCanvasOffset(new Point(x, y), shape);
             shape.Width = w;
             shape.Height = h;
 
@@ -56,31 +56,31 @@ namespace DrawingApp.CommandPattern
 
         public void Redo()
         {
-            invoker.map.Add(shape, canvShape);
-            invoker.mainWindow.canvas.Children.Add(shape);
+            invoker.Map.Add(shape, canvShape);
+            invoker.MainWindow.canvas.Children.Add(shape);
         }
 
         public void Undo()
         {
-            invoker.map.Remove(shape);
-            invoker.mainWindow.canvas.Children.Remove(shape);
+            invoker.Map.Remove(shape);
+            invoker.MainWindow.canvas.Children.Remove(shape);
         }
 
         private void Select(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Shape && invoker.mainWindow.CurrentAction == "select")
+            if (sender is Shape && invoker.MainWindow.CurrentAction == "select")
             {
                 Shape shape = (Shape)sender;
-                CanvasShape parent = invoker.map[shape];
-                if (invoker.mainWindow.Selected != null)
+                CanvasShape parent = invoker.Map[shape];
+                if (invoker.MainWindow.Selected != null)
                 {
-                    invoker.mainWindow.Selected.Unselect();
-                    invoker.mainWindow.Selected = null;
+                    invoker.MainWindow.Selected.Unselect();
+                    invoker.MainWindow.Selected = null;
                 }
-                if (invoker.mainWindow.Selected != parent)
+                if (invoker.MainWindow.Selected != parent)
                 {
-                    invoker.mainWindow.Selected = parent;
-                    invoker.StartMove(parent, e.GetPosition(invoker.mainWindow.canvas));
+                    invoker.MainWindow.Selected = parent;
+                    invoker.StartMove(parent, e.GetPosition(invoker.MainWindow.canvas));
                     parent.Select();
                 }
             }

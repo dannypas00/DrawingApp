@@ -19,7 +19,7 @@ namespace DrawingApp.CommandPattern
             parent.AddChild(child);
             invoker.UpdateGroups();
             child.GetGroupItem().IsSelected = true;
-            invoker.mainWindow.groups.SelectedItem = child.GetGroupItem();
+            invoker.MainWindow.groups.SelectedItem = child.GetGroupItem();
         }
 
         public void Redo()
@@ -31,7 +31,7 @@ namespace DrawingApp.CommandPattern
         public void Undo()
         {
             parent.RemoveChild(child);
-            invoker.mainWindow.groups.Items.Remove(child.GetGroupItem());
+            invoker.MainWindow.groups.Items.Remove(child.GetGroupItem());
         }
     }
 }

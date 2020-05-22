@@ -11,7 +11,7 @@ namespace DrawingApp
     public partial class MainWindow : Window
     {
         public string CurrentAction = "select";
-        public Group File;
+        private readonly Group file;
         public bool HasUpdatedGroups;
         private Point initialPosition;
         private readonly CommandInvoker invoker;
@@ -20,17 +20,11 @@ namespace DrawingApp
 
         public MainWindow()
         {
-            File = new Group();
+            file = new Group();
             invoker = new CommandInvoker(this);
         }
 
-        public void SetCanvasOffset(Point offset, Shape shape)
-        {
-            Canvas.SetLeft(shape, offset.X);
-            Canvas.SetTop(shape, offset.Y);
-        }
-
-        #region Button handling
+        #region Mouse button handling
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (!HasUpdatedGroups)
@@ -78,8 +72,9 @@ namespace DrawingApp
         {
             if (Selected != null) invoker.Resize(Selected, e);
         }
+        #endregion
 
-        #region Toolbar Buttons
+        #region Toolbar Button handling
         //All functions in this region are called upon pressing their respective buttons 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -132,6 +127,22 @@ namespace DrawingApp
             invoker.AddGroup();
         }
         #endregion
-        #endregion
+
+        /// <summary>
+        /// Changes the position of a Shape in
+        /// relation to the canvas.
+        /// </summary>
+        /// <param name="offset">New offset for the shape</param>
+        /// <param name="shape">Shape to reposition</param>
+        public void SetCanvasOffset(Point offset, Shape shape)
+        {
+            Canvas.SetLeft(shape, offset.X);
+            Canvas.SetTop(shape, offset.Y);
+        }
+
+        public Group GetFile()
+        {
+            return file;
+        }
     }
 }

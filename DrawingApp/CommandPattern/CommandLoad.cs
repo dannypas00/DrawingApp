@@ -11,31 +11,26 @@ namespace DrawingApp.CommandPattern
 {
     class CommandLoad : Command
     {
-        public CommandLoad()
-        {
-
-        }
-
         public void Execute(CommandInvoker invoker)
         {
             invoker.Clear();
             string pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
             string filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
-            invoker.mainWindow.groups.Items.Clear();
-            invoker.mainWindow.File.ClearChildren();
-            invoker.groupMap.Clear();
-            invoker.map.Clear();
-            int linenr = 0;
+            invoker.MainWindow.groups.Items.Clear();
+            invoker.MainWindow.GetFile().ClearChildren();
+            invoker.GroupMap.Clear();
+            invoker.Map.Clear();
+            int lineNr = 0;
             Dictionary<int, Group> lineGroupmap = new Dictionary<int, Group>();
             invoker.InitApp();
-            invoker.mainWindow.HasUpdatedGroups = true;
+            invoker.MainWindow.HasUpdatedGroups = true;
             string[] fileLines = File.ReadAllLines(filePath);
             foreach (string line in fileLines)
             {
-                if (linenr == 0)
+                if (lineNr == 0)
                 {
-                    lineGroupmap.Add(linenr, (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem]);
-                    linenr++;
+                    lineGroupmap.Add(lineNr, (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem]);
+                    lineNr++;
                     continue;
                 }
                 string[] splitted = line.Split(' ');
@@ -53,14 +48,14 @@ namespace DrawingApp.CommandPattern
                     }
                 }
 
-                if (invoker.groupMap.Count > 0 && depth != invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem].GetDepth() + 1)
+                if (invoker.GroupMap.Count > 0 && depth != invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem].GetDepth() + 1)
                 {
-                    for (int i = linenr - 1; i > -1; i--)
+                    for (int i = lineNr - 1; i > -1; i--)
                     {
                         //Find first item with a lower depth
                         if (fileLines[i].Contains("group") && lineGroupmap[i].GetDepth() < depth)
                         {
-                            invoker.mainWindow.groups.SelectedItem = lineGroupmap[i].GetGroupItem();
+                            invoker.MainWindow.groups.SelectedItem = lineGroupmap[i].GetGroupItem();
                             break;
                         }
                     }
@@ -90,7 +85,7 @@ namespace DrawingApp.CommandPattern
                         break;
                     case "group":
                         invoker.AddGroup();
-                        lineGroupmap.Add(linenr, (Group)invoker.groupMap[(ListBoxItem)invoker.mainWindow.groups.SelectedItem]);
+                        lineGroupmap.Add(lineNr, (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem]);
                         break;
                     case "ornament":
                         Point relativeLocation;
@@ -116,7 +111,7 @@ namespace DrawingApp.CommandPattern
                     default:
                         continue;
                 }
-                linenr++;
+                lineNr++;
             }
             invoker.UpdateGroups();
         }
