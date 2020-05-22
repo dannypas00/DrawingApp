@@ -9,9 +9,9 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandSave : Command
+    internal class CommandSave : Command
     {
-        private CommandInvoker invoker;
+        private readonly CommandInvoker invoker;
 
         public CommandSave(CommandInvoker invoker)
         {
@@ -39,7 +39,6 @@ namespace DrawingApp.CommandPattern
                         type = shape.GetName().Split(' ')[1];
                     }
                 }
-                //string type = item is Rectangle ? "rectangle" : "ellipse";
                 if (item is Group tempItem)
                 {
                     int tempCount = 0;

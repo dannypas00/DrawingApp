@@ -9,7 +9,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandMove : Command
+    internal class CommandMove : Command
     {
         private Point origin = new Point(0, 0), offset = new Point(0, 0);
         private readonly CanvasShape shape;

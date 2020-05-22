@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandClear : Command
+    internal class CommandClear : Command
     {
         private readonly CommandInvoker invoker;
 

@@ -11,7 +11,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandDraw : Command
+    internal class CommandDraw : Command
     {
         private readonly int x1, y1;
         public int X2, Y2;

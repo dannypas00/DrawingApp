@@ -7,7 +7,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    class CommandInitApp : Command
+    internal class CommandInitApp : Command
     {
         private readonly CommandInvoker invoker;
 
