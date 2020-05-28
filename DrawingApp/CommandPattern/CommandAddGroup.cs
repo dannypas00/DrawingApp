@@ -6,7 +6,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    internal class CommandAddGroup : Command
+    internal class CommandAddGroup : ICommand
     {
         public Group Parent, Child;
         public CommandInvoker Invoker;

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace DrawingApp.CompositePattern
 {
@@ -20,14 +21,12 @@ namespace DrawingApp.CompositePattern
         {
             this.shape = shape;
             this.parent = parent;
-            if (shape is System.Windows.Shapes.Rectangle)
+            name = shape switch
             {
-                name = parent.GetGroupItem().Content.ToString()?.Split(' ')[0] + " rectangle";
-            }
-            else if (shape is Ellipse)
-            {
-                name = parent.GetGroupItem().Content.ToString()?.Split(' ')[0] + " ellipse";
-            }
+                Rectangle _ => parent.GetGroupItem().Content.ToString()?.Split(' ')[0] + " rectangle",
+                Ellipse _ => parent.GetGroupItem().Content.ToString()?.Split(' ')[0] + " ellipse",
+                _ => parent.GetGroupItem().Content.ToString()?.Split(' ')[0] + " UNDEFINED"
+            };
             Group previewParent = parent;
             while (previewParent != null)
             {

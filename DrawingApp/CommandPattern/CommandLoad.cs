@@ -10,7 +10,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    internal class CommandLoad : Command
+    internal class CommandLoad : ICommand
     {
         private readonly CommandInvoker invoker;
 
@@ -21,18 +21,21 @@ namespace DrawingApp.CommandPattern
 
         public void Execute()
         {
-            invoker.Clear();
+            //Set up variables
+            //Set up the path to the save file TODO: Make this path selectable in runtime
             string pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
             string filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
+            string[] fileLines = File.ReadAllLines(filePath);
+            int lineNr = 0;
+            Dictionary<int, Group> lineGroupmap = new Dictionary<int, Group>();
+            //Start off by clearing the old canvas
+            invoker.Clear();
             invoker.MainWindow.groups.Items.Clear();
             invoker.MainWindow.GetFile().ClearChildren();
             invoker.GroupMap.Clear();
             invoker.Map.Clear();
-            int lineNr = 0;
-            Dictionary<int, Group> lineGroupmap = new Dictionary<int, Group>();
             invoker.InitApp();
             invoker.MainWindow.HasUpdatedGroups = true;
-            string[] fileLines = File.ReadAllLines(filePath);
             foreach (string line in fileLines)
             {
                 if (lineNr == 0)
@@ -56,8 +59,10 @@ namespace DrawingApp.CommandPattern
                     }
                 }
 
+                //If the depth of the current line decreased compared to the last line
                 if (invoker.GroupMap.Count > 0 && depth != invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem].GetDepth() + 1)
                 {
+                    //Backtrack to find to what group the new line is supposed to belong
                     for (int i = lineNr - 1; i > -1; i--)
                     {
                         //Find first item with a lower depth
@@ -69,10 +74,11 @@ namespace DrawingApp.CommandPattern
                     }
                 }
 
+                //Process the first keyword after tabs
                 switch (splitted[depth * 4])
                 {
                     case "rectangle":
-                        {   //Extra scope om xywh opnieuw te kunnen gebruiken voor code cleanness
+                        {   //Extra scope to prevent hiding x, y, w, and h
                             double x = Convert.ToInt32(splitted[1 + depth * 4]);
                             double y = Convert.ToInt32(splitted[2 + depth * 4]);
                             double w = Convert.ToInt32(splitted[3 + depth * 4]);
@@ -82,7 +88,7 @@ namespace DrawingApp.CommandPattern
                         }
                         break;
                     case "ellipse":
-                        {
+                        {   //Extra scope to prevent hiding x, y, w, and h
                             double x = Convert.ToInt32(splitted[1 + depth * 4]);
                             double y = Convert.ToInt32(splitted[2 + depth * 4]);
                             double w = Convert.ToInt32(splitted[3 + depth * 4]);
@@ -96,24 +102,14 @@ namespace DrawingApp.CommandPattern
                         lineGroupmap.Add(lineNr, (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem]);
                         break;
                     case "ornament":
-                        Point relativeLocation;
-                        switch (splitted[1 + depth * 4])
+                        Point relativeLocation = splitted[1 + depth * 4] switch
                         {
-                            case "top":
-                                relativeLocation = new Point(0, 1);
-                                break;
-                            case "bottom":
-                                relativeLocation = new Point(0, -1);
-                                break;
-                            case "left":
-                                relativeLocation = new Point(-1, 0);
-                                break;
-                            case "right":
-                                relativeLocation = new Point(1, 0);
-                                break;
-                            default:
-                                throw new InvalidDataException();
-                        }
+                            "top" => new Point(0, 1),
+                            "bottom" => new Point(0, -1),
+                            "left" => new Point(-1, 0),
+                            "right" => new Point(1, 0),
+                            _ => throw new InvalidDataException()
+                        };
                         throw new NotImplementedException();
                         //break;
                     default:

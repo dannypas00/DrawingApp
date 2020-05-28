@@ -12,7 +12,7 @@ using DrawingApp.CompositePattern;
 namespace DrawingApp.CommandPattern
 {
     //Refactor to just adding item to existing group, no need to update all groups every time
-    internal class CommandUpdateGroups : Command
+    internal class CommandUpdateGroups : ICommand
     {
         private readonly CommandInvoker invoker;
 

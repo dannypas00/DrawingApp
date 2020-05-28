@@ -11,46 +11,53 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    internal class CommandDraw : Command
+    internal class CommandDraw : ICommand
     {
         private readonly int x1, y1;
         public int X2, Y2;
         private readonly CommandInvoker invoker;
         private readonly Shape shape;
         private readonly CanvasShape canvShape;
-        private static Random _rnd = new Random();
 
         public CommandDraw(int x1, int y1, Shape shape, CommandInvoker invoker)
         {
+            //Set starting location for drawing the shape
             this.x1 = x1;
             this.y1 = y1;
             this.invoker = invoker;
             this.shape = shape;
-
+            //Get the group that is selected in the group sidebar
             Group selected = invoker.MainWindow.groups.SelectedItem != null ? (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem] : (Group)invoker.MainWindow.groups.Items[0];
+            //Make a new CanvasShape for calling functions on the new shape
             canvShape = new CanvasShape(shape, selected);
-            Group parent = (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem];
+            //Setup the parent-child relationship of the new shape
+            Group parent = selected;
             parent.AddChild(canvShape);
+            //Map the CanvasShape that owns the Shape to it for easy correlation
             invoker.Map.Add(shape, canvShape);
-            shape.MouseDown += new MouseButtonEventHandler(Select);
+            //New event handler for selecting the shape
+            shape.MouseDown += Select;
+            //Setup visuals
             shape.Stroke = shape.Fill = CommandInvoker.RandomColor();
             shape.StrokeThickness = 3;
             invoker.MainWindow.canvas.Children.Add(shape);
-            Trace.WriteLine(invoker.MainWindow.groups.SelectedItem.ToString());
         }
 
         public void Execute()
         {
+            //Set ending location for drawing the shapes
             int x = (int)Math.Min(x1, X2);    //Om **Maxime's** bug te voorkomen
             int y = (int)Math.Min(y1, Y2);    //Om **Maxime's** bug te voorkomen
 
             int w = (int)Math.Max(x1, X2) - x;//Om **Maxime's** bug te voorkomen
             int h = (int)Math.Max(y1, Y2) - y;//Om **Maxime's** bug te voorkomen
 
+            //Move shape into its correct place
             invoker.MainWindow.SetCanvasOffset(new Point(x, y), shape);
             shape.Width = w;
             shape.Height = h;
 
+            //Update group structure to represent added shape
             invoker.UpdateGroups();
         }
 
@@ -70,22 +77,17 @@ namespace DrawingApp.CommandPattern
 
         private void Select(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Shape && invoker.MainWindow.CurrentAction == "select")
+            if (!(sender is Shape) || invoker.MainWindow.CurrentAction != "select") return;
+            CanvasShape parent = invoker.Map[shape];
+            if (invoker.MainWindow.Selected != null)
             {
-                Shape shape = (Shape)sender;
-                CanvasShape parent = invoker.Map[shape];
-                if (invoker.MainWindow.Selected != null)
-                {
-                    invoker.MainWindow.Selected.Unselect();
-                    invoker.MainWindow.Selected = null;
-                }
-                if (invoker.MainWindow.Selected != parent)
-                {
-                    invoker.MainWindow.Selected = parent;
-                    invoker.StartMove(parent, e.GetPosition(invoker.MainWindow.canvas));
-                    parent.Select();
-                }
+                invoker.MainWindow.Selected.Unselect();
+                invoker.MainWindow.Selected = null;
             }
+            if (invoker.MainWindow.Selected == parent) return;
+            invoker.MainWindow.Selected = parent;
+            invoker.StartMove(parent, e.GetPosition(invoker.MainWindow.canvas));
+            parent.Select();
         }
     }
 }

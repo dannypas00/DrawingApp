@@ -9,7 +9,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    internal class CommandSave : Command
+    internal class CommandSave : ICommand
     {
         private readonly CommandInvoker invoker;
 

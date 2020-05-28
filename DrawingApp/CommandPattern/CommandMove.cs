@@ -9,9 +9,9 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    internal class CommandMove : Command
+    internal class CommandMove : ICommand
     {
-        private Point origin = new Point(0, 0), offset = new Point(0, 0);
+        private Point offset = new Point(0, 0);
         private readonly CanvasShape shape;
         private readonly MainWindow mainWindow;
         private Point oldPos = new Point(0, 0);
@@ -21,8 +21,8 @@ namespace DrawingApp.CommandPattern
         {
             this.mainWindow = mainWindow;
             this.shape = shape;
-            this.oldPos.X = Canvas.GetLeft(shape.GetShape());
-            this.oldPos.Y = Canvas.GetTop(shape.GetShape());
+            oldPos.X = Canvas.GetLeft(shape.GetShape());
+            oldPos.Y = Canvas.GetTop(shape.GetShape());
             offset.X = initialPos.X - Canvas.GetLeft(shape.GetShape());
             offset.Y = initialPos.Y - Canvas.GetTop(shape.GetShape());
         }

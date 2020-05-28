@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -36,10 +38,9 @@ namespace DrawingApp
                 HasUpdatedGroups = true;
             }
 
-            foreach (Button b in new List<Button>() { ClearButton, EllipseButton, SaveButton, AddGroup, RectangleButton, LoadButton, UndoButton, RedoButton, ClearButton })
+            foreach (var b in new List<Button>() { ClearButton, ellipse, SaveButton, AddGroup, rectangle, LoadButton, UndoButton, RedoButton, ClearButton }.Where(b => b != null))
             {
-                if (b != null)
-                    b.Background = CommandInvoker.RandomColor();
+                b.Background = CommandInvoker.RandomColor();
             }
 
             mouseButtonHeld = true;
@@ -62,18 +63,16 @@ namespace DrawingApp
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mouseButtonHeld)
+            if (!mouseButtonHeld) return;
+            switch (CurrentAction)
             {
-                switch (CurrentAction)
-                {
-                    case "ellipse":
-                    case "rectangle":
-                        invoker.Draw(e.GetPosition(canvas));
-                        break;
-                    case "select":
-                        if (Selected != null) invoker.Move(e);
-                        break;
-                }
+                case "ellipse":
+                case "rectangle":
+                    invoker.Draw(e.GetPosition(canvas));
+                    break;
+                case "select":
+                    if (Selected != null) invoker.Move(e);
+                    break;
             }
         }
 
@@ -110,9 +109,11 @@ namespace DrawingApp
             invoker.Redo();
         }
 
-        private void EllipseButton_Click(object sender, RoutedEventArgs e)
+        private void ShapeButton_Click(object sender, RoutedEventArgs e)
         {
-            CurrentAction = "ellipse";
+            Button s = (Button) sender;
+            CurrentAction = s.Name;
+            Trace.WriteLine("Name: " + CurrentAction);
             if (Selected == null) return;
             Selected.Unselect();
             Selected = null;
@@ -121,14 +122,6 @@ namespace DrawingApp
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             invoker.Clear();
-        }
-
-        private void RectangleButton_Click(object sender, RoutedEventArgs e)
-        {
-            CurrentAction = "rectangle";
-            if (Selected == null) return;
-            Selected.Unselect();
-            Selected = null;
         }
 
         private void AddGroup_Click(object sender, RoutedEventArgs e)

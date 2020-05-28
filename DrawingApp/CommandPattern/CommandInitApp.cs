@@ -7,7 +7,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    internal class CommandInitApp : Command
+    internal class CommandInitApp : ICommand
     {
         private readonly CommandInvoker invoker;
 
@@ -18,11 +18,10 @@ namespace DrawingApp.CommandPattern
 
         public void Execute()
         {
+            //Logic to make sure the entire frontend is set up properly before calling it
             Group group = invoker.MainWindow.GetFile();
             invoker.MainWindow.groups.Items.Clear();
-            ListBoxItem groupItem = new ListBoxItem();
-            groupItem.Content = group.GetName();
-            groupItem.IsEnabled = true;
+            ListBoxItem groupItem = new ListBoxItem {Content = @group.GetName(), IsEnabled = true};
             invoker.GroupMap.Add(groupItem, group);
             invoker.MainWindow.groups.Items.Add(groupItem);
             group.SetGroupItem(groupItem);

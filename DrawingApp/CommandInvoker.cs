@@ -7,13 +7,14 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using DrawingApp.CommandPattern;
 using DrawingApp.CompositePattern;
+using ICommand = DrawingApp.CommandPattern.ICommand;
 
 namespace DrawingApp
 {
     public class CommandInvoker
     {
-        private readonly Stack<Command> actionsDone = new Stack<Command>();
-        private readonly Stack<Command> actionsUndone = new Stack<Command>();
+        private readonly Stack<ICommand> actionsDone = new Stack<ICommand>();
+        private readonly Stack<ICommand> actionsUndone = new Stack<ICommand>();
         public Dictionary<ListBoxItem, IGroupable> GroupMap = new Dictionary<ListBoxItem, IGroupable>();
         public MainWindow MainWindow;
         public Dictionary<Shape, CanvasShape> Map = new Dictionary<Shape, CanvasShape>();
@@ -80,7 +81,7 @@ namespace DrawingApp
 
         public void UpdateGroups()
         {
-            Command cmd = new CommandUpdateGroups(this);
+            ICommand cmd = new CommandUpdateGroups(this);
             cmd.Execute();
         }
 
@@ -108,7 +109,7 @@ namespace DrawingApp
         public void StartDraw(double x1, double y1, Shape shape)
         {
             //Rounding positions to int to comply with mandatory saving grammar
-            Command cmd = new CommandDraw((int) Math.Round(x1), (int) Math.Round(y1), shape, this);
+            ICommand cmd = new CommandDraw((int) Math.Round(x1), (int) Math.Round(y1), shape, this);
             actionsDone.Push(cmd);
         }
 
@@ -163,7 +164,7 @@ namespace DrawingApp
         /// <param name="initialPos">The initial position of the mouse moving the shape</param>
         public void StartMove(CanvasShape shape, Point initialPos)
         {
-            Command cmd = new CommandMove(shape, initialPos, MainWindow);
+            ICommand cmd = new CommandMove(shape, initialPos, MainWindow);
             actionsDone.Push(cmd);
         }
 
@@ -181,6 +182,10 @@ namespace DrawingApp
         }
         #endregion
 
+        /// <summary>
+        /// Generates a randomly colored brush
+        /// </summary>
+        /// <returns>A SolidColorBrush with the random color</returns>
         public static SolidColorBrush RandomColor()
         {
             var hex = $"#{Rnd.Next(0x1000000):X6}";

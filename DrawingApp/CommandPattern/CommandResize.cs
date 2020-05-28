@@ -6,7 +6,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.CommandPattern
 {
-    internal class CommandResize : Command
+    internal class CommandResize : ICommand
     {
         private const double Multiplier = 0.005;
         private readonly CanvasShape shape;
@@ -15,7 +15,7 @@ namespace DrawingApp.CommandPattern
         public CommandResize(CanvasShape shape, MouseWheelEventArgs currMouseWheelEventArgs)
         {
             this.shape = shape;
-            this.wheelDelta = -currMouseWheelEventArgs.Delta;
+            wheelDelta = -currMouseWheelEventArgs.Delta;
         }
 
         public void Execute()
