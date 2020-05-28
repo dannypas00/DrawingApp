@@ -12,9 +12,9 @@ namespace DrawingApp.CommandPattern
     {
         private readonly CommandInvoker invoker;
 
-        public CommandClear(CommandInvoker invoker)
+        public CommandClear()
         {
-            this.invoker = invoker;
+            this.invoker = CommandInvoker.GetInstance();
         }
 
         public void Execute()

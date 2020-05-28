@@ -26,7 +26,7 @@ namespace DrawingApp
         public MainWindow()
         {
             file = new Group();
-            invoker = new CommandInvoker(this);
+            invoker = CommandInvoker.GetInstance();
         }
 
         #region Mouse button handling
@@ -34,6 +34,7 @@ namespace DrawingApp
         {
             if (!HasUpdatedGroups)
             {
+                invoker.MainWindow = this;
                 invoker.InitApp();
                 HasUpdatedGroups = true;
             }

@@ -11,9 +11,9 @@ namespace DrawingApp.CommandPattern
     {
         private readonly CommandInvoker invoker;
 
-        public CommandInitApp(CommandInvoker invoker)
+        public CommandInitApp()
         {
-            this.invoker = invoker;
+            this.invoker = CommandInvoker.GetInstance();
         }
 
         public void Execute()

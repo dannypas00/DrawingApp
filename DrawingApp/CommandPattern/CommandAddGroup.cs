@@ -11,10 +11,10 @@ namespace DrawingApp.CommandPattern
         public Group Parent, Child;
         public CommandInvoker Invoker;
 
-        public CommandAddGroup(Group parent, CommandInvoker invoker)
+        public CommandAddGroup(Group parent)
         {
             this.Parent = parent;
-            this.Invoker = invoker;
+            this.Invoker = CommandInvoker.GetInstance();
         }
 
         public void Execute()

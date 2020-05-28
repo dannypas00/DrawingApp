@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,15 +16,13 @@ namespace DrawingApp
     {
         private readonly Stack<ICommand> actionsDone = new Stack<ICommand>();
         private readonly Stack<ICommand> actionsUndone = new Stack<ICommand>();
+        private static readonly CommandInvoker instance = new CommandInvoker();
         public Dictionary<ListBoxItem, IGroupable> GroupMap = new Dictionary<ListBoxItem, IGroupable>();
         public MainWindow MainWindow;
         public Dictionary<Shape, CanvasShape> Map = new Dictionary<Shape, CanvasShape>();
         public static readonly Random Rnd = new Random();
 
-        public CommandInvoker(MainWindow mainWindow)
-        {
-            this.MainWindow = mainWindow;
-        }
+        private CommandInvoker() {}
 
         public void Undo()
         {
@@ -49,7 +48,7 @@ namespace DrawingApp
 
         public void InitApp()
         {
-            var cmd = new CommandInitApp(this);
+            var cmd = new CommandInitApp();
             cmd.Execute();
         }
 
@@ -62,26 +61,26 @@ namespace DrawingApp
 
         public void Save()
         {
-            var cmd = new CommandSave(this);
+            var cmd = new CommandSave();
             cmd.Execute();
         }
 
         public void Load()
         {
-            var cmd = new CommandLoad(this);
+            var cmd = new CommandLoad();
             cmd.Execute();
         }
 
         public void Clear()
         {
-            var cmd = new CommandClear(this);
+            var cmd = new CommandClear();
             cmd.Execute();
             actionsDone.Push(cmd);
         }
 
         public void UpdateGroups()
         {
-            ICommand cmd = new CommandUpdateGroups(this);
+            ICommand cmd = new CommandUpdateGroups();
             cmd.Execute();
         }
 
@@ -89,7 +88,7 @@ namespace DrawingApp
         {
             if (MainWindow.groups.SelectedItem != null)
             {
-                var cmd = new CommandAddGroup((Group) GroupMap[(ListBoxItem) MainWindow.groups.SelectedItem], this);
+                var cmd = new CommandAddGroup((Group) GroupMap[(ListBoxItem) MainWindow.groups.SelectedItem]);
                 cmd.Execute();
                 actionsDone.Push(cmd);
             }
@@ -109,7 +108,7 @@ namespace DrawingApp
         public void StartDraw(double x1, double y1, Shape shape)
         {
             //Rounding positions to int to comply with mandatory saving grammar
-            ICommand cmd = new CommandDraw((int) Math.Round(x1), (int) Math.Round(y1), shape, this);
+            ICommand cmd = new CommandDraw((int) Math.Round(x1), (int) Math.Round(y1), shape);
             actionsDone.Push(cmd);
         }
 
@@ -190,6 +189,11 @@ namespace DrawingApp
         {
             var hex = $"#{Rnd.Next(0x1000000):X6}";
             return (SolidColorBrush)(new BrushConverter().ConvertFrom(hex));
+        }
+
+        public static CommandInvoker GetInstance()
+        {
+            return instance;
         }
     }
 }

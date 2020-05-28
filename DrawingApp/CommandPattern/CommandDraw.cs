@@ -19,12 +19,12 @@ namespace DrawingApp.CommandPattern
         private readonly Shape shape;
         private readonly CanvasShape canvShape;
 
-        public CommandDraw(int x1, int y1, Shape shape, CommandInvoker invoker)
+        public CommandDraw(int x1, int y1, Shape shape)
         {
             //Set starting location for drawing the shape
             this.x1 = x1;
             this.y1 = y1;
-            this.invoker = invoker;
+            this.invoker = CommandInvoker.GetInstance();
             this.shape = shape;
             //Get the group that is selected in the group sidebar
             Group selected = invoker.MainWindow.groups.SelectedItem != null ? (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem] : (Group)invoker.MainWindow.groups.Items[0];
