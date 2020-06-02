@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using DrawingApp.VisitorPattern;
 
 namespace DrawingApp.CompositePattern
 {
@@ -10,5 +11,6 @@ namespace DrawingApp.CompositePattern
         public void SetGroupItem(ListBoxItem groupItem);
         public string GetName();
         public int GetDepth();
+        public void Accept(IVisitor v); 
     }
 }

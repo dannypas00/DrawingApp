@@ -33,7 +33,7 @@ namespace DrawingApp.CommandPattern
 
         public void Undo()
         {
-            return;
+            throw new NotImplementedException();
         }
     }
 }

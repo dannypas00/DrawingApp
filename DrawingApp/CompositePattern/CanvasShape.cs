@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using DrawingApp.VisitorPattern;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace DrawingApp.CompositePattern
@@ -81,6 +82,11 @@ namespace DrawingApp.CompositePattern
         public int GetDepth()
         {
             return depth;
+        }
+
+        public void Accept(IVisitor v)
+        {
+            v.VisitCanvasShape(this);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using DrawingApp.VisitorPattern;
 
 namespace DrawingApp.CompositePattern
 {
@@ -86,6 +87,11 @@ namespace DrawingApp.CompositePattern
         public int GetDepth()
         {
             return depth;
+        }
+
+        public void Accept(IVisitor v)
+        {
+            v.VisitGroup(this);
         }
     }
 }
