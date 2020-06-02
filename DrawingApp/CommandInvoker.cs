@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,7 +15,7 @@ namespace DrawingApp
     {
         private readonly Stack<ICommand> actionsDone = new Stack<ICommand>();
         private readonly Stack<ICommand> actionsUndone = new Stack<ICommand>();
-        private static readonly CommandInvoker instance = new CommandInvoker();
+        private static readonly CommandInvoker Instance = new CommandInvoker();
         public Dictionary<ListBoxItem, IGroupable> GroupMap = new Dictionary<ListBoxItem, IGroupable>();
         public MainWindow MainWindow;
         public Dictionary<Shape, CanvasShape> Map = new Dictionary<Shape, CanvasShape>();
@@ -193,7 +192,7 @@ namespace DrawingApp
 
         public static CommandInvoker GetInstance()
         {
-            return instance;
+            return Instance;
         }
     }
 }
