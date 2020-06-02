@@ -46,8 +46,4 @@
     </Resource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="StrategyPattern\" />
-  </ItemGroup>
-
 </Project>

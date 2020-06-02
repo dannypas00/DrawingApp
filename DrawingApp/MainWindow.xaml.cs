@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using DrawingApp.CompositePattern;
+using DrawingApp.StrategyPattern;
 
 namespace DrawingApp
 {
@@ -18,9 +19,10 @@ namespace DrawingApp
         public string CurrentAction = "select";
         private readonly Group file;
         public bool HasUpdatedGroups;
-        private Point initialPosition;
+        public Point InitialPosition;
         private readonly CommandInvoker invoker;
         private bool mouseButtonHeld;
+        private IStrategy strategy;
         public CanvasShape Selected;
 
         public MainWindow()
@@ -39,22 +41,14 @@ namespace DrawingApp
                 HasUpdatedGroups = true;
             }
 
-            foreach (var b in new List<Button>() { ClearButton, ellipse, SaveButton, AddGroup, rectangle, LoadButton, UndoButton, RedoButton, ClearButton }.Where(b => b != null))
+            /*foreach (var b in new List<Button>() { ClearButton, ellipse, SaveButton, AddGroup, rectangle, LoadButton, UndoButton, RedoButton, ClearButton }.Where(b => b != null))
             {
                 b.Background = CommandInvoker.RandomColor();
-            }
+            }*/
 
             mouseButtonHeld = true;
-            initialPosition = e.GetPosition(canvas);
-            switch (CurrentAction)
-            {
-                case "rectangle":
-                    invoker.StartDraw(initialPosition.X, initialPosition.Y, new Rectangle());
-                    break;
-                case "ellipse":
-                    invoker.StartDraw(initialPosition.X, initialPosition.Y, new Ellipse());
-                    break;
-            }
+            InitialPosition = e.GetPosition(canvas);
+            strategy.ExecuteStrategy();
         }
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
@@ -114,6 +108,14 @@ namespace DrawingApp
         {
             Button s = (Button) sender;
             CurrentAction = s.Name;
+            if (CurrentAction == "rectangle")
+            {
+                strategy = new RectangleStrategy();
+            }
+            else if (CurrentAction == "ellipse")
+            {
+                strategy = new EllipseStrategy();
+            }
             Trace.WriteLine("Name: " + CurrentAction);
             if (Selected == null) return;
             Selected.Unselect();
