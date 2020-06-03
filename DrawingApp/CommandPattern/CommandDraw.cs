@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using DrawingApp.CompositePattern;
+using DrawingApp.DecoratorPattern;
 
 namespace DrawingApp.CommandPattern
 {
@@ -40,6 +41,8 @@ namespace DrawingApp.CommandPattern
             //Setup visuals
             shape.Stroke = shape.Fill = CommandInvoker.RandomColor();
             shape.StrokeThickness = 3;
+            IDecorator capDecorator = new CaptionDecorator(new DecoratorContext(canvShape.GetPosition(), "bottom", canvShape));
+            capDecorator.Draw();
             invoker.MainWindow.canvas.Children.Add(shape);
         }
 
@@ -53,7 +56,9 @@ namespace DrawingApp.CommandPattern
             int h = (int)Math.Max(y1, Y2) - y;//Om **Maxime's** bug te voorkomen
 
             //Move shape into its correct place
-            invoker.MainWindow.SetCanvasOffset(new Point(x, y), shape);
+            Point pos = new Point(x, y);
+            invoker.MainWindow.SetCanvasOffset(pos, shape);
+            canvShape.SetPosition(pos);
             shape.Width = w;
             shape.Height = h;
 

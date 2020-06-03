@@ -16,5 +16,10 @@ namespace DrawingApp.VisitorPattern
         {
             throw new NotImplementedException();
         }
+
+        public void VisitCaption(Caption e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

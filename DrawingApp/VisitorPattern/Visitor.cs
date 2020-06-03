@@ -9,5 +9,6 @@ namespace DrawingApp.VisitorPattern
     {
         public void VisitCanvasShape(CanvasShape e);
         public void VisitGroup(Group e);
+        public void VisitCaption(Caption e);
     }
 }

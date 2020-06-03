@@ -73,5 +73,10 @@ namespace DrawingApp.VisitorPattern
                 System.IO.File.WriteAllLines(filePath, buffer);
             }
         }
+
+        public void VisitCaption(Caption e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
