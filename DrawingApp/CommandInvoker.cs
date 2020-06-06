@@ -173,10 +173,13 @@ namespace DrawingApp
         /// <param name="e">The MouseEventArgs of the mouse moving the shape</param>
         public void Move(MouseEventArgs e)
         {
-            var cmd = (CommandMove) actionsDone.Pop();
-            cmd.CurrMouseEventArgs = e;
-            cmd.Execute();
-            actionsDone.Push(cmd);
+            var cmd = actionsDone.Pop();
+            if (cmd is CommandMove cmdM)
+            {
+                cmdM.CurrMouseEventArgs = e;
+                cmdM.Execute();
+                actionsDone.Push(cmdM);
+            }
         }
         #endregion
 

@@ -48,6 +48,7 @@ namespace DrawingApp
 
             mouseButtonHeld = true;
             InitialPosition = e.GetPosition(canvas);
+            if (CurrentAction != "rectangle" && CurrentAction != "ellipse") return;
             strategy.ExecuteStrategy();
         }
 
