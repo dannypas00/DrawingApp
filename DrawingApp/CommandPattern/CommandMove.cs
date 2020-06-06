@@ -14,15 +14,15 @@ namespace DrawingApp.CommandPattern
         private Point offset = new Point(0, 0);
         private readonly CanvasShape shape;
         private readonly MainWindow mainWindow;
-        private Point oldPos = new Point(0, 0);
+        private System.Drawing.Point oldPos = new System.Drawing.Point(0, 0);
         public MouseEventArgs CurrMouseEventArgs;
 
         public CommandMove(CanvasShape shape, Point initialPos, MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             this.shape = shape;
-            oldPos.X = Canvas.GetLeft(shape.GetShape());
-            oldPos.Y = Canvas.GetTop(shape.GetShape());
+            oldPos.X = (int) MathF.Round((float) Canvas.GetLeft(shape.GetShape()));
+            oldPos.Y = (int) MathF.Round((float) Canvas.GetTop(shape.GetShape()));
             offset.X = initialPos.X - Canvas.GetLeft(shape.GetShape());
             offset.Y = initialPos.Y - Canvas.GetTop(shape.GetShape());
         }
@@ -31,23 +31,23 @@ namespace DrawingApp.CommandPattern
         {
             Point absolutePos = CurrMouseEventArgs.GetPosition(mainWindow.canvas);
 
-            double x = absolutePos.X - offset.X;
-            double y = absolutePos.Y - offset.Y;
+            int x = Convert.ToInt32(absolutePos.X - offset.X);
+            int y = Convert.ToInt32(absolutePos.Y - offset.Y);
 
-            mainWindow.SetCanvasOffset(new Point(x, y), shape.GetShape());
+            mainWindow.SetCanvasOffset(new System.Drawing.Point(x, y), shape.GetShape());
         }
 
         public void Redo()
         {
-            Point newPos = oldPos;
-            oldPos = new Point(Canvas.GetLeft(shape.GetShape()), Canvas.GetTop(shape.GetShape()));
+            System.Drawing.Point newPos = oldPos;
+            oldPos = new System.Drawing.Point((int)MathF.Round((float) Canvas.GetLeft(shape.GetShape())), (int)MathF.Round((float) Canvas.GetTop(shape.GetShape())));
             mainWindow.SetCanvasOffset(newPos, shape.GetShape());
         }
 
         public void Undo()
         {
-            Point newPos = oldPos;
-            oldPos = new Point(Canvas.GetLeft(shape.GetShape()), Canvas.GetTop(shape.GetShape()));
+            System.Drawing.Point newPos = oldPos;
+            oldPos = new System.Drawing.Point((int)MathF.Round((float) Canvas.GetLeft(shape.GetShape())), (int)MathF.Round((float) Canvas.GetTop(shape.GetShape())));
             mainWindow.SetCanvasOffset(newPos, shape.GetShape());
         }
     }

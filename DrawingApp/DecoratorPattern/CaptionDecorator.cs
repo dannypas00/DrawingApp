@@ -10,7 +10,7 @@ namespace DrawingApp.DecoratorPattern
 {
     class CaptionDecorator : IDecorator
     {
-        private DecoratorContext context;
+        private readonly DecoratorContext context;
 
         public CaptionDecorator(DecoratorContext context)
         {
@@ -24,6 +24,7 @@ namespace DrawingApp.DecoratorPattern
             Canvas.SetLeft(caption.GetTextBox(), context.parent.GetPosition().X);
             //Find way to change position on screen
             caption.SetText("Yeet");
+            caption.SetPosition(context.parent.GetPosition());
             Trace.WriteLine("Drew " + caption.GetTextBox().Text);
             context.MainWindow.canvas.Children.Add(caption.GetTextBox());
         }

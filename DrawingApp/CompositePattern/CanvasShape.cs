@@ -17,7 +17,7 @@ namespace DrawingApp.CompositePattern
         private readonly string name = "";
         private readonly int depth = 0;
         private ListBoxItem groupItem;
-        private System.Windows.Point position;
+        private Point position;
 
         public CanvasShape(Shape shape, Group parent)
         {
@@ -90,12 +90,12 @@ namespace DrawingApp.CompositePattern
             v.VisitCanvasShape(this);
         }
 
-        public System.Windows.Point GetPosition()
+        public Point GetPosition()
         {
             return this.position;
         }
 
-        public void SetPosition(System.Windows.Point position)
+        public void SetPosition(Point position)
         {
             this.position = position;
         }

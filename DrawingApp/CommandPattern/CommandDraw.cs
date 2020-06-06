@@ -56,7 +56,7 @@ namespace DrawingApp.CommandPattern
             int h = (int)Math.Max(y1, Y2) - y;//Om **Maxime's** bug te voorkomen
 
             //Move shape into its correct place
-            Point pos = new Point(x, y);
+            System.Drawing.Point pos = new System.Drawing.Point(x, y);
             invoker.MainWindow.SetCanvasOffset(pos, shape);
             canvShape.SetPosition(pos);
             shape.Width = w;

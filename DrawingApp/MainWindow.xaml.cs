@@ -140,7 +140,7 @@ namespace DrawingApp
         /// </summary>
         /// <param name="offset">New offset for the shape</param>
         /// <param name="shape">Shape to reposition</param>
-        public void SetCanvasOffset(Point offset, Shape shape)
+        public void SetCanvasOffset(System.Drawing.Point offset, Shape shape)
         {
             Canvas.SetLeft(shape, offset.X);
             Canvas.SetTop(shape, offset.Y);

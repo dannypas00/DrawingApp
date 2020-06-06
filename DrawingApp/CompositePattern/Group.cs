@@ -9,8 +9,8 @@ namespace DrawingApp.CompositePattern
     {
         private readonly List<IGroupable> children = new List<IGroupable>();
         private Group parent;
-        private readonly string name = "";
-        private readonly int brothers = 0;
+        private readonly string name;
+        private readonly int brothers;
         private readonly int depth = 0;
         private ListBoxItem groupItem;
 

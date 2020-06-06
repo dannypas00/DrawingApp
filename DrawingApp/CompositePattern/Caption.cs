@@ -15,8 +15,8 @@ namespace DrawingApp.CompositePattern
         private readonly string name = "";
         private readonly int depth = 0;
         private ListBoxItem groupItem;
-        private TextBox text = new TextBox();
-        private CanvasShape shape;
+        private readonly TextBox text = new TextBox();
+        private Point position;
 
         public Caption(Group parent)
         {
@@ -31,6 +31,18 @@ namespace DrawingApp.CompositePattern
         public TextBox GetTextBox()
         {
             return this.text;
+        }
+
+        public void SetPosition(Point position)
+        {
+            this.position = position;
+            Canvas.SetLeft(text, position.X);
+            Canvas.SetTop(text, position.Y);
+        }
+
+        public Point GetPosition()
+        {
+            return this.position;
         }
 
         public void AddChild(IGroupable child)
