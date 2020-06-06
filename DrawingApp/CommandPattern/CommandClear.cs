@@ -21,9 +21,11 @@ namespace DrawingApp.CommandPattern
         {
             for (int i = invoker.MainWindow.canvas.Children.Count - 1; i > -1; i--)
             {
-                invoker.Map.Remove((Shape)invoker.MainWindow.canvas.Children[i]);
+                var item = invoker.MainWindow.canvas.Children[i];
+                if (item is Shape sItem) invoker.Map.Remove(sItem);
                 invoker.MainWindow.canvas.Children.RemoveAt(i);
             }
+            invoker.UpdateGroups();
         }
 
         public void Redo()

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using DrawingApp.DecoratorPattern;
 using DrawingApp.VisitorPattern;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
@@ -18,6 +19,7 @@ namespace DrawingApp.CompositePattern
         private readonly int depth = 0;
         private ListBoxItem groupItem;
         private Point position;
+        public IDecorator decorator;
 
         public CanvasShape(Shape shape, Group parent)
         {

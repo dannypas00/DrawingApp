@@ -23,6 +23,8 @@ namespace DrawingApp.CompositePattern
         {
             this.parent = parent;
             Canvas.SetZIndex(text, 5);
+            text.Background = Brushes.Transparent;
+            text.BorderBrush = Brushes.Transparent;
         }
 
         public void SetText(string text)
@@ -39,8 +41,8 @@ namespace DrawingApp.CompositePattern
         {
             this.position = position;
             text.Margin = new Thickness(position.X, position.Y, 0, 0);
-            /*Canvas.SetLeft(text, position.X);
-            Canvas.SetTop(text, position.Y);*/
+            //Canvas.SetLeft(text, position.X);
+            //Canvas.SetTop(text, position.Y);
         }
 
         public Point GetPosition()

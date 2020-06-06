@@ -43,6 +43,7 @@ namespace DrawingApp.CommandPattern
             shape.Stroke = shape.Fill = CommandInvoker.RandomColor();
             shape.StrokeThickness = 3;
             capDecorator = new CaptionDecorator(new DecoratorContext(canvShape.GetPosition(), "bottom", canvShape));
+            canvShape.decorator = capDecorator;
             invoker.MainWindow.canvas.Children.Add(shape);
         }
 

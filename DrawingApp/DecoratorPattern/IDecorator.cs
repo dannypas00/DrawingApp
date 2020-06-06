@@ -7,7 +7,7 @@ using DrawingApp.CompositePattern;
 
 namespace DrawingApp.DecoratorPattern
 {
-    interface IDecorator
+    public interface IDecorator
     {
         public void Draw();
     }

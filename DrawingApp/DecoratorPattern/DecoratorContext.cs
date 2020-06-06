@@ -9,19 +9,18 @@ namespace DrawingApp.DecoratorPattern
 {
     public class DecoratorContext
     {
-        public System.Drawing.Point ShapePosition;
-        public System.Drawing.Point DecoratorPosition;
         public string CaptionPosition;  //"top" "bottom" "left" "right"
-        public CanvasShape parent;
+        public CanvasShape shape;
         public MainWindow MainWindow = CommandInvoker.GetInstance().MainWindow;
+        private readonly string[] positions = {"top", "bottom", "left", "right"};
 
         public DecoratorContext(System.Drawing.Point ShapePosition = new System.Drawing.Point(), string CaptionPosition = "",
-            CanvasShape parent = null)
+            CanvasShape shape = null)
         {
-            this.ShapePosition = ShapePosition;
+
             this.CaptionPosition = CaptionPosition;
-            this.parent = parent;
-            this.CaptionPosition = "bottom";
+            this.shape = shape;
+            this.CaptionPosition = positions[CommandInvoker.Rnd.Next(0, 4)];
         }
     }
 }

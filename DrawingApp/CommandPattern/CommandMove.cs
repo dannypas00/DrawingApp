@@ -34,6 +34,7 @@ namespace DrawingApp.CommandPattern
             int x = Convert.ToInt32(absolutePos.X - offset.X);
             int y = Convert.ToInt32(absolutePos.Y - offset.Y);
 
+            shape.decorator.Draw();
             mainWindow.SetCanvasOffset(new System.Drawing.Point(x, y), shape.GetShape());
         }
 
