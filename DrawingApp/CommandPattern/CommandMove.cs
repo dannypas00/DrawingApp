@@ -36,7 +36,7 @@ namespace DrawingApp.CommandPattern
             System.Drawing.Point newPoint = new System.Drawing.Point(x, y);
 
             mainWindow.SetCanvasOffset(newPoint, shape.GetShape());
-            shape.decorator.Draw();
+            shape.decorator?.Draw();
         }
 
         public void Redo()
