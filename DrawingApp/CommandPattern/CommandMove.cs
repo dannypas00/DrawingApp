@@ -33,9 +33,10 @@ namespace DrawingApp.CommandPattern
 
             int x = Convert.ToInt32(absolutePos.X - offset.X);
             int y = Convert.ToInt32(absolutePos.Y - offset.Y);
+            System.Drawing.Point newPoint = new System.Drawing.Point(x, y);
 
+            mainWindow.SetCanvasOffset(newPoint, shape.GetShape());
             shape.decorator.Draw();
-            mainWindow.SetCanvasOffset(new System.Drawing.Point(x, y), shape.GetShape());
         }
 
         public void Redo()

@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using DrawingApp.CommandPattern;
 using DrawingApp.CompositePattern;
+using DrawingApp.DecoratorPattern;
 using ICommand = DrawingApp.CommandPattern.ICommand;
 
 namespace DrawingApp
@@ -16,6 +17,7 @@ namespace DrawingApp
         private readonly Stack<ICommand> actionsDone = new Stack<ICommand>();
         private readonly Stack<ICommand> actionsUndone = new Stack<ICommand>();
         private static readonly CommandInvoker Instance = new CommandInvoker();
+        private DecoratorContext decoratorContext;
         public Dictionary<ListBoxItem, IGroupable> GroupMap = new Dictionary<ListBoxItem, IGroupable>();
         public MainWindow MainWindow;
         public Dictionary<Shape, CanvasShape> Map = new Dictionary<Shape, CanvasShape>();
@@ -107,7 +109,8 @@ namespace DrawingApp
         public void StartDraw(double x1, double y1, Shape shape)
         {
             //Rounding positions to int to comply with mandatory saving grammar
-            ICommand cmd = new CommandDraw((int) Math.Round(x1), (int) Math.Round(y1), shape);
+            ICommand cmd = new CommandDraw((int) Math.Round(x1), (int) Math.Round(y1), shape, decoratorContext);
+            decoratorContext = null;
             actionsDone.Push(cmd);
         }
 
@@ -196,6 +199,11 @@ namespace DrawingApp
         public static CommandInvoker GetInstance()
         {
             return Instance;
+        }
+
+        public void Ornament()
+        {
+            this.decoratorContext = new DecoratorContext();
         }
     }
 }

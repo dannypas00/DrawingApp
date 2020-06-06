@@ -58,6 +58,9 @@
                     <Button x:Name="AddGroup" Grid.Column="8" Margin="2,0" Click="AddGroup_Click" Background="DimGray">
                         <Image Source="Img/plus.png" Margin="0,3"/>
                     </Button>
+                    <Button x:Name="AddOrnament" Grid.Column="9" Margin="2,0" Click="AddOrnament_Click" Background="DimGray">
+                        <Image Source="Img/ornament.png" Margin="0,3"/>
+                    </Button>
                 </Grid>
             </Grid>
         </Border>

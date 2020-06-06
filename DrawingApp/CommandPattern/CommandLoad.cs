@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using DrawingApp.CompositePattern;
+using DrawingApp.DecoratorPattern;
 
 namespace DrawingApp.CommandPattern
 {
@@ -28,6 +30,7 @@ namespace DrawingApp.CommandPattern
             string[] fileLines = File.ReadAllLines(filePath);
             int lineNr = 0;
             Dictionary<int, Group> lineGroupmap = new Dictionary<int, Group>();
+            List<CaptionDecorator> nextCaptions = new List<CaptionDecorator>();
             //Start off by clearing the old canvas
             invoker.Clear();
             invoker.MainWindow.groups.Items.Clear();
@@ -66,7 +69,7 @@ namespace DrawingApp.CommandPattern
                     for (int i = lineNr - 1; i > -1; i--)
                     {
                         //Find first item with a lower depth
-                        if (fileLines[i].Contains("group") && lineGroupmap[i].GetDepth() < depth)
+                        if (fileLines[i].Split(" ").Contains("group") && lineGroupmap[i].GetDepth() < depth)
                         {
                             invoker.MainWindow.groups.SelectedItem = lineGroupmap[i].GetGroupItem();
                             break;
@@ -83,8 +86,16 @@ namespace DrawingApp.CommandPattern
                             double y = Convert.ToInt32(splitted[2 + depth * 4]);
                             double w = Convert.ToInt32(splitted[3 + depth * 4]);
                             double h = Convert.ToInt32(splitted[4 + depth * 4]);
-                            invoker.StartDraw(x, y, new Rectangle());
+                            Rectangle rect = new Rectangle();
+                            invoker.StartDraw(x, y, rect);
                             invoker.Draw(x + w, y + h);
+                            foreach (CaptionDecorator deco in nextCaptions)
+                            {
+                                deco.context.shape = invoker.Map[rect];
+                                deco.Draw();
+                                invoker.Map[rect].decorator = deco.parent;
+                            }
+                            nextCaptions.Clear();
                         }
                         break;
                     case "ellipse":
@@ -102,16 +113,8 @@ namespace DrawingApp.CommandPattern
                         lineGroupmap.Add(lineNr, (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem]);
                         break;
                     case "ornament":
-                        Point relativeLocation = splitted[1 + depth * 4] switch
-                        {
-                            "top" => new Point(0, 1),
-                            "bottom" => new Point(0, -1),
-                            "left" => new Point(-1, 0),
-                            "right" => new Point(1, 0),
-                            _ => throw new InvalidDataException()
-                        };
-                        throw new NotImplementedException();
-                        //break;
+                        nextCaptions.Add(new CaptionDecorator(new DecoratorContext(default, splitted[1 + depth * 4], null, splitted[2] + depth * 4)));
+                        break;
                     default:
                         continue;
                 }

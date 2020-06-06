@@ -19,15 +19,17 @@ namespace DrawingApp.CommandPattern
         private readonly CommandInvoker invoker;
         private readonly Shape shape;
         private readonly CanvasShape canvShape;
-        private readonly IDecorator capDecorator;
+        public readonly IDecorator capDecorator;
+        private DecoratorContext context;
 
-        public CommandDraw(int x1, int y1, Shape shape)
+        public CommandDraw(int x1, int y1, Shape shape, DecoratorContext context = null)
         {
             //Set starting location for drawing the shape
             this.x1 = x1;
             this.y1 = y1;
             this.invoker = CommandInvoker.GetInstance();
             this.shape = shape;
+            this.context = context;
             //Get the group that is selected in the group sidebar
             Group selected = invoker.MainWindow.groups.SelectedItem != null ? (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem] : (Group)invoker.MainWindow.groups.Items[0];
             //Make a new CanvasShape for calling functions on the new shape
@@ -42,9 +44,14 @@ namespace DrawingApp.CommandPattern
             //Setup visuals
             shape.Stroke = shape.Fill = CommandInvoker.RandomColor();
             shape.StrokeThickness = 3;
-            capDecorator = new CaptionDecorator(new DecoratorContext(canvShape.GetPosition(), "bottom", canvShape));
+            if (context != null)
+            {
+                context.shape = canvShape;
+                capDecorator = new CaptionDecorator(context);
+            }
             canvShape.decorator = capDecorator;
             invoker.MainWindow.canvas.Children.Add(shape);
+            invoker.MainWindow.AddOrnament.Background = Brushes.DimGray;
         }
 
         public void Execute()
@@ -62,7 +69,7 @@ namespace DrawingApp.CommandPattern
             canvShape.SetPosition(pos);
             shape.Width = w;
             shape.Height = h;
-            capDecorator.Draw();
+            capDecorator?.Draw();
 
             //Update group structure to represent added shape
             invoker.UpdateGroups();

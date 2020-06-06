@@ -10,6 +10,7 @@
     <None Remove="Img\clear.png" />
     <None Remove="Img\ellipse.png" />
     <None Remove="Img\load.png" />
+    <None Remove="Img\ornament.png" />
     <None Remove="Img\plus.png" />
     <None Remove="Img\rectangle.png" />
     <None Remove="Img\redo.png" />
@@ -26,6 +27,7 @@
     <Resource Include="Img\load.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Img\ornament.png" />
     <Resource Include="Img\plus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

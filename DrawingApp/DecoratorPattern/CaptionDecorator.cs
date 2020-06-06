@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 using System.Net.Mail;
 using System.Text;
 using System.Windows;
@@ -12,7 +13,7 @@ namespace DrawingApp.DecoratorPattern
 {
     class CaptionDecorator : IDecorator
     {
-        private readonly DecoratorContext context;
+        public readonly DecoratorContext context;
         private readonly Caption caption;
         private System.Drawing.Point offset;
         public IDecorator parent;
@@ -21,7 +22,7 @@ namespace DrawingApp.DecoratorPattern
         {
             this.context = context;
             this.caption = new Caption(context.shape.GetParent());
-            caption.SetText("Yeet");
+            caption.SetText(context.captionText);
             this.parent = parent;
             context.MainWindow.canvas.Children.Add(caption.GetTextBox());
         }
@@ -40,7 +41,7 @@ namespace DrawingApp.DecoratorPattern
                         offset = new Point(0, (int) MathF.Round((float) context.shape.GetShape().Height));
                         break;
                     case "left":
-                        offset = new Point(-8 * caption.GetTextBox().Text.Length, 0);
+                        offset = new Point(-5 * caption.GetTextBox().Text.Length, 0);
                         caption.GetTextBox().HorizontalContentAlignment = HorizontalAlignment.Right;
                         break;
                     case "right":
@@ -51,7 +52,6 @@ namespace DrawingApp.DecoratorPattern
                         break;
                 }
             }
-
             //caption.SetText("Yeet");
             caption.SetPosition(new Point(context.shape.GetPosition().X + offset.X, context.shape.GetPosition().Y + offset.Y));
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using DrawingApp.CompositePattern;
 using DrawingApp.StrategyPattern;
@@ -29,6 +30,7 @@ namespace DrawingApp
         {
             file = new Group();
             invoker = CommandInvoker.GetInstance();
+            invoker.MainWindow = this;
         }
 
         #region Mouse button handling
@@ -144,11 +146,18 @@ namespace DrawingApp
         {
             Canvas.SetLeft(shape, offset.X);
             Canvas.SetTop(shape, offset.Y);
+            invoker.Map[shape].SetPosition(offset);
         }
 
         public Group GetFile()
         {
             return file;
+        }
+
+        private void AddOrnament_Click(object sender, RoutedEventArgs e)
+        {
+            invoker.Ornament();
+            AddOrnament.Background = Brushes.DarkGray;
         }
     }
 }
