@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DrawingApp.VisitorPattern;
+using Point = System.Drawing.Point;
 
 namespace DrawingApp.CompositePattern
 {
@@ -21,6 +22,7 @@ namespace DrawingApp.CompositePattern
         public Caption(Group parent)
         {
             this.parent = parent;
+            Canvas.SetZIndex(text, 5);
         }
 
         public void SetText(string text)
@@ -36,8 +38,9 @@ namespace DrawingApp.CompositePattern
         public void SetPosition(Point position)
         {
             this.position = position;
-            Canvas.SetLeft(text, position.X);
-            Canvas.SetTop(text, position.Y);
+            text.Margin = new Thickness(position.X, position.Y, 0, 0);
+            /*Canvas.SetLeft(text, position.X);
+            Canvas.SetTop(text, position.Y);*/
         }
 
         public Point GetPosition()

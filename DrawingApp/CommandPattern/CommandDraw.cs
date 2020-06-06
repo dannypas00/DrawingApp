@@ -19,6 +19,7 @@ namespace DrawingApp.CommandPattern
         private readonly CommandInvoker invoker;
         private readonly Shape shape;
         private readonly CanvasShape canvShape;
+        private readonly IDecorator capDecorator;
 
         public CommandDraw(int x1, int y1, Shape shape)
         {
@@ -41,8 +42,7 @@ namespace DrawingApp.CommandPattern
             //Setup visuals
             shape.Stroke = shape.Fill = CommandInvoker.RandomColor();
             shape.StrokeThickness = 3;
-            IDecorator capDecorator = new CaptionDecorator(new DecoratorContext(canvShape.GetPosition(), "bottom", canvShape));
-            capDecorator.Draw();
+            capDecorator = new CaptionDecorator(new DecoratorContext(canvShape.GetPosition(), "bottom", canvShape));
             invoker.MainWindow.canvas.Children.Add(shape);
         }
 
@@ -61,6 +61,7 @@ namespace DrawingApp.CommandPattern
             canvShape.SetPosition(pos);
             shape.Width = w;
             shape.Height = h;
+            capDecorator.Draw();
 
             //Update group structure to represent added shape
             invoker.UpdateGroups();
