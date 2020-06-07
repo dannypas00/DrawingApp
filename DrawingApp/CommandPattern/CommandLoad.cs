@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Shapes;
 using DrawingApp.CompositePattern;
 using DrawingApp.DecoratorPattern;
+using Microsoft.Win32;
 
 namespace DrawingApp.CommandPattern
 {
@@ -25,9 +26,10 @@ namespace DrawingApp.CommandPattern
         {
             //Set up variables
             //Set up the path to the save file TODO: Make this path selectable in runtime
-            string pathWithEnv = @"%USERPROFILE%\Pictures\DrawingApp\save.txt";
-            string filePath = Environment.ExpandEnvironmentVariables(pathWithEnv);
-            string[] fileLines = File.ReadAllLines(filePath);
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Save file (*.sav)|*.sav";
+            if (openFileDialog.ShowDialog() != true) return;
+            string[] fileLines = File.ReadAllLines(openFileDialog.FileName);
             int lineNr = 0;
             Dictionary<int, Group> lineGroupmap = new Dictionary<int, Group>();
             List<CaptionDecorator> nextCaptions = new List<CaptionDecorator>();
@@ -113,7 +115,7 @@ namespace DrawingApp.CommandPattern
                         lineGroupmap.Add(lineNr, (Group)invoker.GroupMap[(ListBoxItem)invoker.MainWindow.groups.SelectedItem]);
                         break;
                     case "ornament":
-                        nextCaptions.Add(new CaptionDecorator(new DecoratorContext(default, splitted[1 + depth * 4], null, splitted[2] + depth * 4)));
+                        //nextCaptions.Add(new CaptionDecorator(new DecoratorContext(default, splitted[1 + depth * 4], null, splitted[2] + depth * 4)));
                         break;
                     default:
                         continue;
